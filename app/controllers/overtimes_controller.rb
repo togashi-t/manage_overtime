@@ -7,9 +7,9 @@ class OvertimesController < ApplicationController
     @overtime.save!
   end
 
-
   private
+
     def overtime_params
-      params.require(:overtime).permit(:date, :work_start_time, :work_end_time, :work_time )
+      params.require(:overtime).permit(:date, :work_start_time, :work_end_time, :work_time)
     end
 end
