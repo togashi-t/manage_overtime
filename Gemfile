@@ -24,6 +24,8 @@ gem "gon"
 
 gem "faker"
 
+gem "tod"
+
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
   gem "factory_bot_rails"
