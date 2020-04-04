@@ -32,13 +32,14 @@ user.overtimes.destroy_all
 overtimes = []
 (START_DATE..END_DATE).each do |date|
   next unless rand(RECORD_CONSTANT).zero?
+
   WORK_END_TIME = Tod::TimeOfDay.new(0) + rand(MIN_WORK_END_TIME_MINUTE..MAX_WORK_END_TIME_MINUTE) * 60
   overtimes << {
     user_id: user.id,
     date: date,
     work_start_time: WORK_START_TIME.to_s,
     work_end_time: WORK_END_TIME.to_s,
-    work_time: (WORK_END_TIME - WORK_START_TIME).to_s
+    work_time: (WORK_END_TIME - WORK_START_TIME).to_s,
   }
 end
 Overtime.create!(overtimes)

@@ -22,6 +22,7 @@ class Overtime < ApplicationRecord
   # end
 
   private
+
     def convert_work_time_to_work_time_minute
       self.work_time_minute = Tod::TimeOfDay.parse(self.work_time).to_i / 60
     end
