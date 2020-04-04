@@ -10,13 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_25_133938) do
+ActiveRecord::Schema.define(version: 2020_04_04_011956) do
 
   create_table "overtimes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.date "date", null: false
     t.time "work_start_time", null: false
     t.time "work_end_time", null: false
-    t.time "work_time", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
