@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_25_133938) do
+ActiveRecord::Schema.define(version: 2020_04_04_013159) do
 
   create_table "overtimes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.date "date", null: false
     t.time "work_start_time", null: false
     t.time "work_end_time", null: false
-    t.time "work_time", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "work_time_minutes", null: false
     t.index ["user_id", "date"], name: "index_overtimes_on_user_id_and_date", unique: true
     t.index ["user_id"], name: "index_overtimes_on_user_id"
   end
