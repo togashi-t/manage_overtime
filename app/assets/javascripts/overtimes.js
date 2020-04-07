@@ -1,5 +1,6 @@
 document.addEventListener('turbolinks:load', () => {
 
+  // 入力フォーム
   // viewのformでtime_selectを使用した箇所には、自動的にidが付与される
   const workStartTimeHour = document.getElementById("overtime_work_start_time_4i")
   const workStartTimeMinute = document.getElementById("overtime_work_start_time_5i")
@@ -21,5 +22,33 @@ document.addEventListener('turbolinks:load', () => {
       workTime.value = workTimeValue
     });
   });
+
+
+  // 個人毎のグラフ
+  // グラフを描く場所を取得
+  const chartContext = document.getElementById("chart").getContext('2d')
+
+  // 年月・残業時間のデータ
+  let months = Object.keys(gon.monthly_chart_data)
+  let overtimes = Object.values(gon.monthly_chart_data)
+
+  let overtimeData = {
+    labels: months,
+    datasets: [{
+        label: '(時間)',
+        data: overtimes,
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+    }]
+  }
+
+  // グラフを描画
+  new Chart(chartContext, {
+    type: 'bar',
+    data: overtimeData,
+
+  })
+
 
 })

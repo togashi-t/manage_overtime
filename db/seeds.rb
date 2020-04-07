@@ -13,9 +13,9 @@ END_DATE = Date.today
 WORK_START_TIME = Tod::TimeOfDay.parse("17:15")
 # => #<Tod::TimeOfDay:0x00007f8bc84accb0 @hour=17, @minute=15, @second=0, @second_of_day=62100>
 MIN_WORK_END_TIME = Tod::TimeOfDay.parse("17:16")
-MIN_WORK_END_TIME_SCOND = MIN_WORK_END_TIME.second_of_day
+MIN_WORK_END_TIME_MINUTE = MIN_WORK_END_TIME.second_of_day / 60
 MAX_WORK_END_TIME = Tod::TimeOfDay.parse("24:00")
-MAX_WORK_END_TIME_SECOND = MAX_WORK_END_TIME.second_of_day
+MAX_WORK_END_TIME_MINUTE = MAX_WORK_END_TIME.second_of_day / 60
 
 # 入力確率 1/(RECORD_CONSTANT) の確率でデータを記録
 RECORD_CONSTANT = 3
@@ -33,7 +33,7 @@ overtimes = []
 (START_DATE..END_DATE).each do |date|
   next unless rand(RECORD_CONSTANT).zero?
 
-  WORK_END_TIME = Tod::TimeOfDay.new(0) + rand(MIN_WORK_END_TIME_SCOND..MAX_WORK_END_TIME_SECOND)
+  WORK_END_TIME = Tod::TimeOfDay.new(0) + rand(MIN_WORK_END_TIME_MINUTE..MAX_WORK_END_TIME_MINUTE) * 60
   overtimes << {
     user_id: user.id,
     date: date,
