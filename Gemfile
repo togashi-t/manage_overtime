@@ -23,7 +23,7 @@ gem "flatpickr"
 gem "gon"
 
 gem "faker"
-
+gem "gimei"
 gem "tod"
 
 group :development, :test do
