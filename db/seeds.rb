@@ -1,22 +1,20 @@
 # user
-GROUPS = ["A", "B", "C"]
-PASSWORD = "password"
+GROUPS = ["A", "B", "C"].freeze
+PASSWORD = "password".freeze
 
 users = []
-3.times{
+3.times {
   GROUPS.each do |group|
     users << {
       name: Gimei.unique.name.kanji,
       group: group,
       email: Faker::Internet.email,
-      password: PASSWORD
+      password: PASSWORD,
     }
   end
 }
 User.create!(users)
 puts "テストユーザーの初期データを投入しました"
-
-
 
 # overtime
 # データの入力期間
@@ -32,23 +30,23 @@ MAX_WORK_END_TIME = Tod::TimeOfDay.parse("24:00")
 MAX_WORK_END_TIME_MINUTE = MAX_WORK_END_TIME.second_of_day / 60
 
 # 入力確率 1/rand(RECORD_CONSTANT_RANGE) の確率でデータを記録
-RECORD_CONSTANT_RANGE = 3..6
+RECORD_CONSTANT_RANGE = (3..6).freeze
 
 overtimes = []
 users = User.order("id")
 users.each do |user|
   record_constant = rand(RECORD_CONSTANT_RANGE)
   (START_DATE..END_DATE).each do |date|
-    if rand(record_constant).zero?
-      work_end_time = Tod::TimeOfDay.new(0) + rand(MIN_WORK_END_TIME_MINUTE..MAX_WORK_END_TIME_MINUTE) * 60
-      overtimes << {
-        user_id: user.id,
-        date: date,
-        work_start_time: WORK_START_TIME.to_s,
-        work_end_time: work_end_time.to_s,
-        work_time: (work_end_time - WORK_START_TIME).to_s,
-      }
-    end
+    next unless rand(record_constant).zero?
+
+    work_end_time = Tod::TimeOfDay.new(0) + rand(MIN_WORK_END_TIME_MINUTE..MAX_WORK_END_TIME_MINUTE) * 60
+    overtimes << {
+      user_id: user.id,
+      date: date,
+      work_start_time: WORK_START_TIME.to_s,
+      work_end_time: work_end_time.to_s,
+      work_time: (work_end_time - WORK_START_TIME).to_s,
+    }
   end
 end
 Overtime.create!(overtimes)
