@@ -43,11 +43,21 @@ document.addEventListener('turbolinks:load', () => {
     }]
   }
 
+  let overtimeOption = {
+    scales: {
+      yAxes: [{
+        ticks: {
+          suggestedMax: 60
+        }
+      }]
+    }
+  }
+
   // グラフを描画
   new Chart(chartContext, {
     type: 'bar',
     data: overtimeData,
-
+    options: overtimeOption
   })
 
 
