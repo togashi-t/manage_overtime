@@ -13,6 +13,32 @@ class Overtime < ApplicationRecord
     monthly_hour_data
   end
 
+  # {user_id: XX（分）, ...}
+  def self.this_month_minute_data
+    this_month = Time.now.all_month
+    this_month_minute_data = Overtime.where(date: this_month).group(:user_id).sum(:work_time_minute)
+  end
+
+  def self.estimate_value_at_the_end_of_month(value)
+    today = Date.today
+    day_of_today = today.day
+    last_day_of_month = today.end_of_month.day
+    progress_rate = day_of_today.to_f / last_day_of_month
+    value / progress_rate
+  end
+
+  # {user_id: {today: XX（時間）, end_of_month: XX（時間）}, ...}
+  def self.this_month_hour_data
+    this_month_hour_data = {}
+    Overtime.this_month_minute_data.each do |key, value|
+      hour_until_today = value.to_f / 60
+      this_month_hour_data[key] = {today: hour_until_today.floor(1),
+         end_of_month: Overtime.estimate_value_at_the_end_of_month(hour_until_today).floor(1)}
+    end
+    this_month_hour_data
+  end
+
+
   private
 
     def convert_work_time_to_work_time_minute

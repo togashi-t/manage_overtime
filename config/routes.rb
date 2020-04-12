@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  root "overtimes#index"
+  root "users#index"
   devise_for :users
-  resources :users, only: :show
+  resources :users, only: [:index, :show]
   resources :overtimes
 end
