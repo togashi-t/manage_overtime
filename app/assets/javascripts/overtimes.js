@@ -1,6 +1,6 @@
 document.addEventListener('turbolinks:load', () => {
 
-  // usersのindexページでのみ動作
+  // usersのshowページでのみ動作
   if(document.getElementById("show-chart")) {
 
     // 入力フォーム
@@ -64,6 +64,22 @@ document.addEventListener('turbolinks:load', () => {
     })
 
   }
+
+
+  // usersのindexページ
+  if(document.getElementById("index-table")){
+    const hourAtTheEndOfMonthList = document.querySelectorAll(".hour_at_the_end_of_month")
+    console.log(hourAtTheEndOfMonthList)
+    hourAtTheEndOfMonthList.forEach(el => {
+      let hour = el.innerHTML
+      if (hour >= 60) {
+        el.classList.add("bg-danger")
+      } else if (hour >= 30) {
+        el.classList.add("bg-warning")
+      }
+    })
+  }
+
 
 
 })
