@@ -3,8 +3,6 @@ class Overtime < ApplicationRecord
   attr_accessor :work_time
   before_validation :convert_work_time_to_work_time_minute
 
-
-
   # index-table用
   # {user_id: XX（分）, ...}
   def self.this_month_minute_data
@@ -31,7 +29,6 @@ class Overtime < ApplicationRecord
     this_month_hour_data
   end
 
-
   # show-table用
   def self.this_month_overtimes(userid)
     this_month = Time.zone.now.all_month
@@ -48,9 +45,6 @@ class Overtime < ApplicationRecord
     end
     monthly_hour_data
   end
-
-
-
 
   private
 

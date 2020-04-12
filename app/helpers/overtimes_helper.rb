@@ -5,7 +5,7 @@ module OvertimesHelper
 
   def extract_day(date)
     wd = ["日", "月", "火", "水", "木", "金", "土"]
-    date.strftime("#{wd[date.wday]}")
+    date.strftime((wd[date.wday]).to_s)
   end
 
   def extract_time(date_time)
@@ -15,6 +15,6 @@ module OvertimesHelper
   def convert_to_hour_and_minute(in_minutes)
     hour = in_minutes / 60
     minute = in_minutes % 60
-    "#{sprintf("%02d", hour)}:#{sprintf("%02d", minute)}"
+    "#{"%02d" % hour}:#{"%02d" % minute}"
   end
 end
