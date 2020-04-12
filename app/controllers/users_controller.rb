@@ -9,5 +9,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     gon.monthly_chart_data = Overtime.monthly_chart_data(params[:id])
+
+    @overtimes = Overtime.this_month_overtimes(params[:id])
   end
 end
