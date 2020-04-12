@@ -31,10 +31,39 @@
   <div class="form-group mt-3">
     <%= form.submit '新規登録', class: 'btn btn-primary btn-block' %>
   </div>
-
-
-
-
-  <canvas id="show-chart"></canvas>
-
 <% end %>
+
+
+<canvas id="show-chart" class="mt-5 mb-5"></canvas>
+
+
+<p>今月の残業</p>
+<table class="table table-hover" id="show-table">
+  <thead>
+    <tr>
+      <th class="text-center">日付</th>
+      <th class="text-center">曜日</th>
+      <th class="text-center">開始時刻</th>
+      <th class="text-center">終了時刻</th>
+      <th class="text-center">時間数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @overtimes.each do |overtime| %>
+      <tr>
+        <td class="text-center"><%= extract_date(overtime.date) %></td>
+        <td class="text-center day"><%= extract_day(overtime.date) %></td>
+        <td class="text-center"><%= extract_time(overtime.work_start_time) %></td>
+        <td class="text-center"><%= extract_time(overtime.work_end_time) %></td>
+        <td class="text-center"><%= convert_to_hour_and_minute(overtime.work_time_minute) %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td class="text-right">合計</td>
+      <td class="text-center"><%= convert_to_hour_and_minute(@overtimes.sum(:work_time_minute)) %></td>
+    </tr>
+  </tbody>
+</table>
