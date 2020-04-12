@@ -1,0 +1,22 @@
+<p>今月の残業時間</p>
+
+<table class="table table-hover" id="index-table">
+  <thead>
+    <tr>
+      <th class="text-center">グループ名</th>
+      <th class="text-center">氏名</th>
+      <th class="text-center">現時点</th>
+      <th class="text-center">月末（推計値）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td class="text-center"><%= user.group %></td>
+        <td class="text-center"><%= link_to user.name, user_path(user.id) %></td>
+        <td class="text-right hour_now"><%= @this_month_hour_data[user.id][:today] %></td>
+        <td class="text-right hour_at_the_end_of_month"><%= @this_month_hour_data[user.id][:end_of_month] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
