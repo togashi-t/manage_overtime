@@ -63,7 +63,23 @@ document.addEventListener('turbolinks:load', () => {
       options: overtimeOption
     })
 
+
   }
+
+
+  if(document.getElementById("show-table")){
+    const dayList = document.querySelectorAll(".day")
+    dayList.forEach(el => {
+      let day = el.innerHTML
+      if (day == "土") {
+        el.classList.add("text-primary")
+      } else if (day == "日") {
+        el.classList.add("text-danger")
+      }
+    })
+  }
+
+
 
 
   // usersのindexページ
@@ -79,7 +95,6 @@ document.addEventListener('turbolinks:load', () => {
       }
     })
   }
-
 
 
 })
