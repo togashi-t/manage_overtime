@@ -34,7 +34,8 @@ RECORD_CONSTANT_RANGE = (3..6).freeze
 
 overtimes = []
 users = User.order("id")
-users.each do |user|
+# 全ユーザーの内、最後のユーザーを除くユーザー
+users.slice(0, users.length - 1).each do |user|
   record_constant = rand(RECORD_CONSTANT_RANGE)
   (START_DATE..END_DATE).each do |date|
     next unless rand(record_constant).zero?
@@ -49,5 +50,22 @@ users.each do |user|
     }
   end
 end
+
+# 最後のユーザー
+user = users.last
+record_constant = rand(RECORD_CONSTANT_RANGE)
+(START_DATE..END_DATE).each do |date|
+  next if date.month.odd?
+
+  work_end_time = Tod::TimeOfDay.new(0) + rand(MIN_WORK_END_TIME_MINUTE..MAX_WORK_END_TIME_MINUTE) * 60
+    overtimes << {
+      user_id: user.id,
+      date: date,
+      work_start_time: WORK_START_TIME.to_s,
+      work_end_time: work_end_time.to_s,
+      work_time: (work_end_time - WORK_START_TIME).to_s,
+    }
+end
+
 Overtime.create!(overtimes)
 puts "残業日時の初期データを投入しました。"
