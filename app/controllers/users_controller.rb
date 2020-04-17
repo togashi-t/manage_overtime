@@ -1,8 +1,6 @@
 class UsersController < ApplicationController
   def index
     @users = User.all.order(:group)
-
-    @this_month_hour_data = Overtime.this_month_hour_data
   end
 
   def show
