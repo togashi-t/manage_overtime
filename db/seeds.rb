@@ -56,7 +56,7 @@ user = users.last
 record_constant = rand(RECORD_CONSTANT_RANGE)
 (START_DATE..END_DATE).each do |date|
   next if date.month.odd?
-
+  next unless rand(record_constant).zero?
   work_end_time = Tod::TimeOfDay.new(0) + rand(MIN_WORK_END_TIME_MINUTE..MAX_WORK_END_TIME_MINUTE) * 60
     overtimes << {
       user_id: user.id,
