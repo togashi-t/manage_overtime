@@ -1,9 +1,8 @@
 document.addEventListener('turbolinks:load', () => {
 
-  // usersのshowページでのみ動作
-  if(document.getElementById("show-chart")) {
-
-    // 入力フォーム
+  // usersのshowページ
+  // 入力フォーム
+  if(document.getElementById("form")) {
     // viewのformでtime_selectを使用した箇所には、自動的にidが付与される
     const workStartTimeHour = document.getElementById("overtime_work_start_time_4i")
     const workStartTimeMinute = document.getElementById("overtime_work_start_time_5i")
@@ -25,9 +24,11 @@ document.addEventListener('turbolinks:load', () => {
         workTime.value = workTimeValue
       });
     });
+  }
 
+  // 個人毎のグラフ
+  if(document.getElementById("show-chart")) {
 
-    // 個人毎のグラフ
     // グラフを描く場所を取得
     const chartContext = document.getElementById("show-chart").getContext('2d')
 
@@ -63,10 +64,9 @@ document.addEventListener('turbolinks:load', () => {
       options: overtimeOption
     })
 
-
   }
 
-
+  // 個人当月のテーブル
   if(document.getElementById("show-table")){
     const dayList = document.querySelectorAll(".day")
     dayList.forEach(el => {
@@ -82,7 +82,9 @@ document.addEventListener('turbolinks:load', () => {
 
 
 
+
   // usersのindexページ
+  // 全ユーザー当月のテーブル
   if(document.getElementById("index-table")){
     const hourAtTheEndOfMonthList = document.querySelectorAll(".hour_at_the_end_of_month")
     console.log(hourAtTheEndOfMonthList)
