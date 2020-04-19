@@ -14,8 +14,8 @@
       <tr>
         <td class="text-center"><%= user.group %></td>
         <td class="text-center"><%= link_to user.name, user_path(user.id) %></td>
-        <td class="text-right hour_now"><%= @this_month_hour_data[user.id][:today] %></td>
-        <td class="text-right hour_at_the_end_of_month"><%= @this_month_hour_data[user.id][:end_of_month] %></td>
+        <td class="text-right hour_now"><%= convert_to_hour(user.this_month_minute) %></td>
+        <td class="text-right hour_at_the_end_of_month"><%= convert_to_hour(estimate_value_at_the_end_of_month(user.this_month_minute)) %></td>
       </tr>
     <% end %>
   </tbody>
