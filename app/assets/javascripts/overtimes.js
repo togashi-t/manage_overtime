@@ -32,9 +32,64 @@ document.addEventListener('turbolinks:load', () => {
     // グラフを描く場所を取得
     const chartContext = document.getElementById("show-chart").getContext('2d')
 
+    // グラフ描画期間
+    const extractYearAndMonth = (date) => [date.getFullYear(), date.getMonth() + 1]
+    const TODAY = new Date()
+    const ELEVEN_MONTH_AGO = new Date()
+    ELEVEN_MONTH_AGO.setMonth(TODAY.getMonth() - 11)
+    let chartBeginning = extractYearAndMonth(ELEVEN_MONTH_AGO)
+    let chartEnd = extractYearAndMonth(TODAY)
+
+    // 引数はどちらも[year, month]の形
+    const yearAndMonthList = (beginning, end) => {
+      const list = []
+      let year
+      let month
+      [year, month] = beginning
+      while(JSON.stringify([year, month]) != JSON.stringify(end)) {
+        list.push([year, month])
+        if(month != 12) {
+          month += 1
+        } else {
+          year += 1
+          month = 1
+        }
+      }
+      list.push(end)
+      return list
+    }
+
+    // 引数は[year, month]の形
+    const convertYearAndMonthFormat = (yearAndMonth) => {
+      let year
+      let month
+      [year, month] = yearAndMonth
+      return `${year}年${month}月`
+    }
+
+    const formatedYearAndMonthList = (beginning, end) => {
+      const list = []
+      yearAndMonthList(beginning, end).forEach(el => {
+        list.push(convertYearAndMonthFormat(el))
+      })
+      return list
+    }
+
+    // controllerから渡されたデータの残業がない月の残業時間に0を補完
+    const complementedMonthlyChartData = (beginning, end) => {
+      let hash = {}
+      formatedYearAndMonthList(beginning, end).forEach(yearAndMonth => {
+        let overtime
+        overtime = gon.monthly_chart_data[yearAndMonth] || 0
+        hash[yearAndMonth] = overtime
+      })
+      return hash
+    }
+
     // 年月・残業時間のデータ
-    let months = Object.keys(gon.monthly_chart_data)
-    let overtimes = Object.values(gon.monthly_chart_data)
+    const monthlyChartData = complementedMonthlyChartData(chartBeginning, chartEnd)
+    let months = Object.keys(monthlyChartData)
+    let overtimes = Object.values(monthlyChartData)
 
     let overtimeData = {
       labels: months,
