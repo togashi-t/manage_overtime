@@ -1,24 +1,29 @@
 # user
-GROUPS = ["A", "B", "C"].freeze
+GROUPS = ["A", "B", "C", "D", "E", "F", "G"].freeze
 PASSWORD = "password".freeze
+NUMBER_OF_USERS_PER_GROUP = 3
+
+number_of_groups = GROUPS.length
+number_of_users = NUMBER_OF_USERS_PER_GROUP * number_of_groups
 
 users = []
-3.times {
-  GROUPS.each do |group|
-    users << {
-      name: Gimei.unique.name.kanji,
-      group: group,
-      email: Faker::Internet.email,
-      password: PASSWORD,
-    }
-  end
-}
+for i in (1..number_of_users) do
+  group_index = i % number_of_groups - 1
+  users << {
+    name: Gimei.unique.name.kanji,
+    group: GROUPS[group_index],
+    email: "user_id_#{i}@email.com",
+    password: PASSWORD,
+  }
+end
+
 User.create!(users)
 puts "テストユーザーの初期データを投入しました"
 
 # overtime
 # データの入力期間
-START_DATE = Date.today - 12.months
+YEARS = 2
+START_DATE = Date.today - (YEARS * 12).months
 END_DATE = Date.today
 
 # 記録する時刻の範囲

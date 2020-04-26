@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   def index
     @users = User.all.order(:group)
+
+    gon.group_monthly_chart_data = Overtime.group_monthly_chart_data
   end
 
   def show
