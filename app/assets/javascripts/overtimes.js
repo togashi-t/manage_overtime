@@ -139,10 +139,134 @@ document.addEventListener('turbolinks:load', () => {
 
 
   // usersのindexページ
+  // グループごとのグラフ
+  if(document.getElementById("index-chart")) {
+
+    // グラフを描く場所を取得
+    const chartContext = document.getElementById("index-chart").getContext('2d')
+
+    // グラフ描画期間
+    const extractYearAndMonth = (date) => [date.getFullYear(), date.getMonth() + 1]
+    const TODAY = new Date()
+    const ELEVEN_MONTH_AGO = new Date()
+    ELEVEN_MONTH_AGO.setMonth(TODAY.getMonth() - 11)
+    let chartBeginning = extractYearAndMonth(ELEVEN_MONTH_AGO)
+    let chartEnd = extractYearAndMonth(TODAY)
+
+    // 引数はどちらも[year, month]の形
+    const yearAndMonthList = (beginning, end) => {
+      const arr = []
+      let year
+      let month
+      [year, month] = beginning
+      while(JSON.stringify([year, month]) != JSON.stringify(end)) {
+        arr.push([year, month])
+        if(month != 12) {
+          month += 1
+        } else {
+          year += 1
+          month = 1
+        }
+      }
+      arr.push(end)
+      return arr
+    }
+
+    // 引数は[year, month]の形
+    const convertYearAndMonthFormat = (yearAndMonth) => {
+      let year
+      let month
+      [year, month] = yearAndMonth
+      return `${year}年${month}月`
+    }
+
+    const formatedYearAndMonthList = (beginning, end) => {
+      const arr = []
+      yearAndMonthList(beginning, end).forEach(el => {
+        arr.push(convertYearAndMonthFormat(el))
+      })
+      return arr
+    }
+
+    const groupMonthlyChartData = gon.group_monthly_chart_data
+
+    // controllerから渡されたデータの残業がない月の残業時間に0を補完
+    const complementedMonthlyChartData = (beginning, end) => {
+      let obj = {}
+      Object.keys(groupMonthlyChartData).forEach(key => {
+        obj[key] = {}
+        let monthlyChartData = groupMonthlyChartData[key]
+
+        formatedYearAndMonthList(beginning, end).forEach(yearAndMonth => {
+          let overtime
+          overtime = monthlyChartData[yearAndMonth] || 0
+          obj[key][yearAndMonth] = overtime
+        })
+      })
+      return obj
+    }
+
+    // 年月・残業時間のデータ
+    const data = complementedMonthlyChartData(chartBeginning, chartEnd)
+    const groups = Object.keys(data)
+    const months = formatedYearAndMonthList(chartBeginning, chartEnd)
+
+    const datasetList = []
+    const colors = [
+      "rgba(255, 0, 255, 0.8)",
+      "rgba(0, 0, 255, 0.8)",
+      "rgba(0, 128, 0, 0.8)",
+      "rgba(0, 255, 255, 0.8)",
+      "rgba(255, 0, 0, 0.8)",
+      "rgba(128, 0, 128, 0.8)",
+      "rgba(0, 128, 128, 0.8)",
+      "rgba(255, 255, 0, 0.8)",
+      "rgba(128, 128, 0, 0.8)",
+      "rgba(0, 255, 0, 0.8)",
+    ]
+    groups.forEach((group, index) => {
+      let dataset = {}
+      let color = colors[index]
+      dataset["label"] = group,
+      dataset["data"] = Object.values(data[group]),
+      dataset["backgroundColor"] = color,
+      dataset["borderColor"] = color,
+      dataset["borderWidth"] = 1,
+      dataset["lineTension"] = 0,
+      dataset["fill"] = false,
+      datasetList.push(dataset)
+    })
+
+    let overtimeData = {
+      labels: months,
+      datasets: datasetList
+    }
+
+    let overtimeOption = {
+      scales: {
+        yAxes: [{
+          ticks: {
+            suggestedMax: 150
+          }
+        }]
+      }
+    }
+
+    // // グラフを描画
+    new Chart(chartContext, {
+      type: 'line',
+      data: overtimeData,
+      options: overtimeOption
+    })
+
+  }
+
+
+
+
   // 全ユーザー当月のテーブル
   if(document.getElementById("index-table")){
     const hourAtTheEndOfMonthList = document.querySelectorAll(".hour_at_the_end_of_month")
-    console.log(hourAtTheEndOfMonthList)
     hourAtTheEndOfMonthList.forEach(el => {
       let hour = el.innerHTML
       if (hour >= 60) {
