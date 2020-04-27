@@ -7,7 +7,7 @@ number_of_groups = GROUPS.length
 number_of_users = NUMBER_OF_USERS_PER_GROUP * number_of_groups
 
 users = []
-for i in (1..number_of_users) do
+(1..number_of_users).each do |i|
   group_index = i % number_of_groups - 1
   users << {
     name: Gimei.unique.name.kanji,
@@ -62,14 +62,15 @@ record_constant = rand(RECORD_CONSTANT_RANGE)
 (START_DATE..END_DATE).each do |date|
   next if date.month.odd?
   next unless rand(record_constant).zero?
+
   work_end_time = Tod::TimeOfDay.new(0) + rand(MIN_WORK_END_TIME_MINUTE..MAX_WORK_END_TIME_MINUTE) * 60
-    overtimes << {
-      user_id: user.id,
-      date: date,
-      work_start_time: WORK_START_TIME.to_s,
-      work_end_time: work_end_time.to_s,
-      work_time: (work_end_time - WORK_START_TIME).to_s,
-    }
+  overtimes << {
+    user_id: user.id,
+    date: date,
+    work_start_time: WORK_START_TIME.to_s,
+    work_end_time: work_end_time.to_s,
+    work_time: (work_end_time - WORK_START_TIME).to_s,
+  }
 end
 
 Overtime.create!(overtimes)

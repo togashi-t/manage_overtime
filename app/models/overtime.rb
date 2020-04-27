@@ -3,7 +3,6 @@ class Overtime < ApplicationRecord
   attr_accessor :work_time
   before_validation :convert_work_time_to_work_time_minute
 
-
   # show-table用
   def self.this_month_overtimes(userid)
     this_month = Time.zone.now.all_month
@@ -22,7 +21,6 @@ class Overtime < ApplicationRecord
     monthly_hour_data
   end
 
-
   # index-chart用
   def self.group_monthly_hour_data
     # {["A", "2019年4月"]=>1828, ["A", "2019年5月"]=>6418, ...} を生成
@@ -36,13 +34,12 @@ class Overtime < ApplicationRecord
 
   def self.group_monthly_chart_data
     # {"A"=> {"2019年4月"=>30.4, "2019年5月"=>106.9, ...} に成形
-    hash = Hash.new { |h,k| h[k] = {} }
+    hash = Hash.new {|h, k| h[k] = {} }
     Overtime.group_monthly_hour_data.each do |key, value|
       hash[key[0]][key[1]] = value
     end
     hash
   end
-
 
   private
 
