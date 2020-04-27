@@ -1,7 +1,7 @@
 # user
 GROUPS = ["A", "B", "C"].freeze
 # 7グループとしたいが、herokuのdbのクエリ数の制約があることから、
-#データ数を減らすため、一旦3グループとする。
+# データ数を減らすため、一旦3グループとする。
 # GROUPS = ["A", "B", "C", "D", "E", "F", "G"].freeze
 PASSWORD = "password".freeze
 NUMBER_OF_USERS_PER_GROUP = 3

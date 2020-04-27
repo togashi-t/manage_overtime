@@ -12,11 +12,11 @@ class Overtime < ApplicationRecord
   # show-chart用
   def self.monthly_chart_data(userid)
     # {[2019, 4]=>○○○○, [2019, 5]=>○○○○, …} を生成
-    year_and_month_minute_data = Overtime.where(user_id: userid).group("extract(year from date)").group("extract(month from date)").sum(:work_time_minute)
+    year_and_month_minute_data = Overtime.where(user_id: userid).group("DATE_FORMAT(date,'%Y年%c月')").sum(:work_time_minute)
     # {["2019年4月"=>○○○○, "2019年4月"=>○○○○, …} に成形
     monthly_hour_data = {}
     year_and_month_minute_data.each do |key, value|
-      monthly_hour_data["#{key[0].floor}年#{key[1].floor}月"] = (value.to_f / 60).floor(1)
+      monthly_hour_data[key] = (value.to_f / 60).floor(1)
     end
     monthly_hour_data
   end
