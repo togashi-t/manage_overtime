@@ -140,17 +140,17 @@ document.addEventListener('turbolinks:load', () => {
 
 
     // グラフ描画期間の変更
-    const indexChartPeriodBeginningYear = document.getElementById("index_chart_period_beginning_1i")
-    const indexChartPeriodBeginningMonth = document.getElementById("index_chart_period_beginning_2i")
-    const indexChartPeriodEndYear = document.getElementById("index_chart_period_end_1i")
-    const indexChartPeriodEndMonth = document.getElementById("index_chart_period_end_2i")
-    const indexChartPeriodButton = document.getElementById("index-chart-period-button")
+    const showChartPeriodBeginningYear = document.getElementById("show_chart_period_beginning_1i")
+    const showChartPeriodBeginningMonth = document.getElementById("show_chart_period_beginning_2i")
+    const showChartPeriodEndYear = document.getElementById("show_chart_period_end_1i")
+    const showChartPeriodEndMonth = document.getElementById("show_chart_period_end_2i")
+    const showChartPeriodButton = document.getElementById("show-chart-period-button")
 
-    indexChartPeriodButton.addEventListener('click', function() {
-      let beginningYear = parseInt(indexChartPeriodBeginningYear.value)
-      let beginningMonth = parseInt(indexChartPeriodBeginningMonth.value)
-      let endYear = parseInt(indexChartPeriodEndYear.value)
-      let endMonth = parseInt(indexChartPeriodEndMonth.value)
+    showChartPeriodButton.addEventListener('click', function() {
+      let beginningYear = parseInt(showChartPeriodBeginningYear.value)
+      let beginningMonth = parseInt(showChartPeriodBeginningMonth.value)
+      let endYear = parseInt(showChartPeriodEndYear.value)
+      let endMonth = parseInt(showChartPeriodEndMonth.value)
 
       if(beginningYear > endYear) {
         alert("始期年月 < 終期年月 としてください")
