@@ -25,7 +25,7 @@ puts "テストユーザーの初期データを投入しました"
 
 # overtime
 # データの入力期間
-YEARS = 2
+YEARS = 1
 START_DATE = Date.today - (YEARS * 12).months
 END_DATE = Date.today
 
