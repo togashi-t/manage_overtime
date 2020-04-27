@@ -9,7 +9,4 @@ class User < ApplicationRecord
     this_month = Time.zone.now.all_month
     self.overtimes.where(date: this_month).sum(:work_time_minute)
   end
-
-
-
 end

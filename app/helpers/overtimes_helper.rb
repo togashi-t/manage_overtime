@@ -29,6 +29,4 @@ module OvertimesHelper
     progress_rate = day_of_today.to_f / last_day_of_month
     value / progress_rate
   end
-
-
 end

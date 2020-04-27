@@ -1,5 +1,8 @@
 # user
-GROUPS = ["A", "B", "C", "D", "E", "F", "G"].freeze
+GROUPS = ["A", "B", "C"].freeze
+# 7グループとしたいが、herokuのdbのクエリ数の制約があることから、
+#データ数を減らすため、一旦3グループとする。
+# GROUPS = ["A", "B", "C", "D", "E", "F", "G"].freeze
 PASSWORD = "password".freeze
 NUMBER_OF_USERS_PER_GROUP = 3
 
@@ -7,7 +10,7 @@ number_of_groups = GROUPS.length
 number_of_users = NUMBER_OF_USERS_PER_GROUP * number_of_groups
 
 users = []
-for i in (1..number_of_users) do
+(1..number_of_users).each do |i|
   group_index = i % number_of_groups - 1
   users << {
     name: Gimei.unique.name.kanji,
@@ -22,7 +25,7 @@ puts "テストユーザーの初期データを投入しました"
 
 # overtime
 # データの入力期間
-YEARS = 2
+YEARS = 1
 START_DATE = Date.today - (YEARS * 12).months
 END_DATE = Date.today
 
@@ -62,14 +65,15 @@ record_constant = rand(RECORD_CONSTANT_RANGE)
 (START_DATE..END_DATE).each do |date|
   next if date.month.odd?
   next unless rand(record_constant).zero?
+
   work_end_time = Tod::TimeOfDay.new(0) + rand(MIN_WORK_END_TIME_MINUTE..MAX_WORK_END_TIME_MINUTE) * 60
-    overtimes << {
-      user_id: user.id,
-      date: date,
-      work_start_time: WORK_START_TIME.to_s,
-      work_end_time: work_end_time.to_s,
-      work_time: (work_end_time - WORK_START_TIME).to_s,
-    }
+  overtimes << {
+    user_id: user.id,
+    date: date,
+    work_start_time: WORK_START_TIME.to_s,
+    work_end_time: work_end_time.to_s,
+    work_time: (work_end_time - WORK_START_TIME).to_s,
+  }
 end
 
 Overtime.create!(overtimes)

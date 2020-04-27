@@ -32,13 +32,13 @@ document.addEventListener('turbolinks:load', () => {
     // グラフを描く場所を取得
     const chartContext = document.getElementById("show-chart").getContext('2d')
 
-    // グラフ描画期間
-    const extractYearAndMonth = (date) => [date.getFullYear(), date.getMonth() + 1]
+    // 所定年月
     const TODAY = new Date()
-    const ELEVEN_MONTH_AGO = new Date()
-    ELEVEN_MONTH_AGO.setMonth(TODAY.getMonth() - 11)
-    let chartBeginning = extractYearAndMonth(ELEVEN_MONTH_AGO)
-    let chartEnd = extractYearAndMonth(TODAY)
+    const FIVE_MONTH_AGO = new Date()
+    FIVE_MONTH_AGO.setMonth(TODAY.getMonth() - 5)
+
+    // 日付型から[year, month]を生成
+    const extractYearAndMonth = (date) => [date.getFullYear(), date.getMonth() + 1]
 
     // 引数はどちらも[year, month]の形
     const yearAndMonthList = (beginning, end) => {
@@ -86,38 +86,81 @@ document.addEventListener('turbolinks:load', () => {
       return hash
     }
 
-    // 年月・残業時間のデータ
-    const monthlyChartData = complementedMonthlyChartData(chartBeginning, chartEnd)
-    let months = Object.keys(monthlyChartData)
-    let overtimes = Object.values(monthlyChartData)
 
-    let overtimeData = {
-      labels: months,
-      datasets: [{
+    let chart
+
+    const drawChart = (beginning, end) => {
+      // 年月・残業時間のデータ
+      let monthlyChartData = complementedMonthlyChartData(beginning, end)
+      let months = Object.keys(monthlyChartData)
+      let overtimes = Object.values(monthlyChartData)
+
+      let overtimeData = {
+        labels: months,
+        datasets: [{
           label: '(時間)',
           data: overtimes,
           backgroundColor: 'rgba(255, 99, 132, 0.2)',
           borderColor: 'rgba(255, 99, 132, 1)',
           borderWidth: 1
-      }]
-    }
-
-    let overtimeOption = {
-      scales: {
-        yAxes: [{
-          ticks: {
-            suggestedMax: 60
-          }
         }]
       }
+
+      let overtimeOption = {
+        scales: {
+          yAxes: [{
+            ticks: {
+              suggestedMax: 60
+            }
+          }]
+        }
+      }
+
+      if(!chart) {
+        // グラフが存在しないときはグラフを新規に描画する
+        chart = new Chart(chartContext, {
+          type: 'bar',
+          data: overtimeData,
+          options: overtimeOption
+        })
+      } else {
+        // グラフが存在するときはグラフのデータを更新する
+        chart.data = overtimeData
+        chart.options = overtimeOption
+        chart.update()
+      }
+
     }
 
-    // グラフを描画
-    new Chart(chartContext, {
-      type: 'bar',
-      data: overtimeData,
-      options: overtimeOption
+
+    // グラフの初期表示
+    let chartBeginning = extractYearAndMonth(FIVE_MONTH_AGO)
+    let chartEnd = extractYearAndMonth(TODAY)
+    drawChart(chartBeginning, chartEnd)
+
+
+    // グラフ描画期間の変更
+    const indexChartPeriodBeginningYear = document.getElementById("index_chart_period_beginning_1i")
+    const indexChartPeriodBeginningMonth = document.getElementById("index_chart_period_beginning_2i")
+    const indexChartPeriodEndYear = document.getElementById("index_chart_period_end_1i")
+    const indexChartPeriodEndMonth = document.getElementById("index_chart_period_end_2i")
+    const indexChartPeriodButton = document.getElementById("index-chart-period-button")
+
+    indexChartPeriodButton.addEventListener('click', function() {
+      let beginningYear = parseInt(indexChartPeriodBeginningYear.value)
+      let beginningMonth = parseInt(indexChartPeriodBeginningMonth.value)
+      let endYear = parseInt(indexChartPeriodEndYear.value)
+      let endMonth = parseInt(indexChartPeriodEndMonth.value)
+
+      if(beginningYear > endYear) {
+        alert("始期年月 < 終期年月 としてください")
+      } else if((beginningYear == endYear) && (beginningMonth >= endMonth)) {
+        alert("始期年月 < 終期年月 としてください")
+      } else {
+        drawChart([beginningYear, beginningMonth], [endYear, endMonth])
+      }
     })
+
 
   }
 
