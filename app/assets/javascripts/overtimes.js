@@ -237,7 +237,6 @@ document.addEventListener('turbolinks:load', () => {
     // controllerから渡されたデータの残業がない月の残業時間に0を補完
     const complementedGroupMonthlyChartData = (beginning, end) => {
       let obj = {}
-      console.log(groupMonthlyChartData)
       Object.keys(groupMonthlyChartData).forEach(key => {
         obj[key] = {}
         let monthlyChartData = groupMonthlyChartData[key]
