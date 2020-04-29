@@ -75,6 +75,7 @@ document.addEventListener('turbolinks:load', () => {
       return list
     }
 
+
     // controllerから渡されたデータの残業がない月の残業時間に0を補完
     const complementedMonthlyChartData = (beginning, end) => {
       let hash = {}
@@ -188,13 +189,13 @@ document.addEventListener('turbolinks:load', () => {
     // グラフを描く場所を取得
     const chartContext = document.getElementById("index-chart").getContext('2d')
 
-    // グラフ描画期間
-    const extractYearAndMonth = (date) => [date.getFullYear(), date.getMonth() + 1]
+    // 所定年月
     const TODAY = new Date()
-    const ELEVEN_MONTH_AGO = new Date()
-    ELEVEN_MONTH_AGO.setMonth(TODAY.getMonth() - 11)
-    let chartBeginning = extractYearAndMonth(ELEVEN_MONTH_AGO)
-    let chartEnd = extractYearAndMonth(TODAY)
+    const FIVE_MONTH_AGO = new Date()
+    FIVE_MONTH_AGO.setMonth(TODAY.getMonth() - 5)
+
+    // 日付型から[year, month]を生成
+    const extractYearAndMonth = (date) => [date.getFullYear(), date.getMonth() + 1]
 
     // 引数はどちらも[year, month]の形
     const yearAndMonthList = (beginning, end) => {
@@ -234,7 +235,7 @@ document.addEventListener('turbolinks:load', () => {
     const groupMonthlyChartData = gon.group_monthly_chart_data
 
     // controllerから渡されたデータの残業がない月の残業時間に0を補完
-    const complementedMonthlyChartData = (beginning, end) => {
+    const complementedGroupMonthlyChartData = (beginning, end) => {
       let obj = {}
       Object.keys(groupMonthlyChartData).forEach(key => {
         obj[key] = {}
@@ -249,57 +250,101 @@ document.addEventListener('turbolinks:load', () => {
       return obj
     }
 
-    // 年月・残業時間のデータ
-    const data = complementedMonthlyChartData(chartBeginning, chartEnd)
-    const groups = Object.keys(data)
-    const months = formatedYearAndMonthList(chartBeginning, chartEnd)
 
-    const datasetList = []
-    const colors = [
-      "rgba(255, 0, 255, 0.8)",
-      "rgba(0, 0, 255, 0.8)",
-      "rgba(0, 128, 0, 0.8)",
-      "rgba(0, 255, 255, 0.8)",
-      "rgba(255, 0, 0, 0.8)",
-      "rgba(128, 0, 128, 0.8)",
-      "rgba(0, 128, 128, 0.8)",
-      "rgba(255, 255, 0, 0.8)",
-      "rgba(128, 128, 0, 0.8)",
-      "rgba(0, 255, 0, 0.8)",
-    ]
-    groups.forEach((group, index) => {
-      let dataset = {}
-      let color = colors[index]
-      dataset["label"] = group,
-      dataset["data"] = Object.values(data[group]),
-      dataset["backgroundColor"] = color,
-      dataset["borderColor"] = color,
-      dataset["borderWidth"] = 1,
-      dataset["lineTension"] = 0,
-      dataset["fill"] = false,
-      datasetList.push(dataset)
-    })
+    let chart
 
-    let overtimeData = {
-      labels: months,
-      datasets: datasetList
-    }
+    const drawChart = (beginning, end) => {
+      // グループ・年月・残業時間のデータ
+      let groupAndMonthlyChartData = complementedGroupMonthlyChartData(beginning, end)
+      let groups = Object.keys(groupAndMonthlyChartData)
+      let firstGroupMonthlyChartData = Object.values(groupAndMonthlyChartData)[0]
+      let months = Object.keys(firstGroupMonthlyChartData)
 
-    let overtimeOption = {
-      scales: {
-        yAxes: [{
-          ticks: {
-            suggestedMax: 150
-          }
-        }]
+      let datasetList = []
+      const colors = [
+        "rgba(255, 0, 255, 0.8)",
+        "rgba(0, 0, 255, 0.8)",
+        "rgba(0, 128, 0, 0.8)",
+        "rgba(0, 255, 255, 0.8)",
+        "rgba(255, 0, 0, 0.8)",
+        "rgba(128, 0, 128, 0.8)",
+        "rgba(0, 128, 128, 0.8)",
+        "rgba(255, 255, 0, 0.8)",
+        "rgba(128, 128, 0, 0.8)",
+        "rgba(0, 255, 0, 0.8)",
+      ]
+      groups.forEach((group, index) => {
+        let dataset = {}
+        let color = colors[index]
+        dataset["label"] = group,
+        dataset["data"] = Object.values(groupAndMonthlyChartData[group]),
+        dataset["backgroundColor"] = color,
+        dataset["borderColor"] = color,
+        dataset["borderWidth"] = 1,
+        dataset["lineTension"] = 0,
+        dataset["fill"] = false,
+        datasetList.push(dataset)
+      })
+
+      let overtimeData = {
+        labels: months,
+        datasets: datasetList
       }
+
+      let overtimeOption = {
+        scales: {
+          yAxes: [{
+            ticks: {
+              suggestedMax: 150
+            }
+          }]
+        }
+      }
+
+      if(!chart) {
+        // グラフが存在しないときはグラフを新規に描画する
+        chart = new Chart(chartContext, {
+          type: 'line',
+          data: overtimeData,
+          options: overtimeOption
+        })
+      } else {
+        // グラフが存在するときはグラフのデータを更新する
+        chart.data = overtimeData
+        chart.options = overtimeOption
+        chart.update()
+      }
+
     }
 
-    // // グラフを描画
-    new Chart(chartContext, {
-      type: 'line',
-      data: overtimeData,
-      options: overtimeOption
+
+    // グラフの初期表示
+    let chartBeginning = extractYearAndMonth(FIVE_MONTH_AGO)
+    let chartEnd = extractYearAndMonth(TODAY)
+    drawChart(chartBeginning, chartEnd)
+
+
+
+    // グラフ描画期間の変更
+    const indexChartPeriodBeginningYear = document.getElementById("index_chart_period_beginning_1i")
+    const indexChartPeriodBeginningMonth = document.getElementById("index_chart_period_beginning_2i")
+    const indexChartPeriodEndYear = document.getElementById("index_chart_period_end_1i")
+    const indexChartPeriodEndMonth = document.getElementById("index_chart_period_end_2i")
+    const indexChartPeriodButton = document.getElementById("index-chart-period-button")
+
+    indexChartPeriodButton.addEventListener('click', function() {
+      let beginningYear = parseInt(indexChartPeriodBeginningYear.value)
+      let beginningMonth = parseInt(indexChartPeriodBeginningMonth.value)
+      let endYear = parseInt(indexChartPeriodEndYear.value)
+      let endMonth = parseInt(indexChartPeriodEndMonth.value)
+
+      if(beginningYear > endYear) {
+        alert("始期年月 < 終期年月 としてください")
+      } else if((beginningYear == endYear) && (beginningMonth >= endMonth)) {
+        alert("始期年月 < 終期年月 としてください")
+      } else {
+        drawChart([beginningYear, beginningMonth], [endYear, endMonth])
+      }
     })
 
   }
