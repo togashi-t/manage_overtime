@@ -1,33 +1,6 @@
 document.addEventListener('turbolinks:load', () => {
 
-  // usersのshowページ
-  // 入力フォーム
-  if(document.getElementById("form")) {
-    // viewのformでtime_selectを使用した箇所には、自動的にidが付与される
-    const workStartTimeHour = document.getElementById("overtime_work_start_time_4i")
-    const workStartTimeMinute = document.getElementById("overtime_work_start_time_5i")
-    const workEndTimeHour = document.getElementById("overtime_work_end_time_4i")
-    const workEndTimeMinute = document.getElementById("overtime_work_end_time_5i")
-    const workTime = document.getElementById("work-time")
-    const inputs = document.querySelectorAll('.input-time')
-
-    inputs.forEach(el => {
-      el.addEventListener('change', function(){
-        let workStartTimeValueConvertedToMinute = (Number(workStartTimeHour.value * 60) + Number(workStartTimeMinute.value))
-        let workEndTimeValueConvertedToMinute = (Number(workEndTimeHour.value * 60) + Number(workEndTimeMinute.value))
-
-        let workTimeValueConvertedToMinute = (workEndTimeValueConvertedToMinute - workStartTimeValueConvertedToMinute)
-        let workTimeHourValue = Math.floor(workTimeValueConvertedToMinute / 60)
-        let workTimeMinuteValue = workTimeValueConvertedToMinute % 60
-        // ゼロフィル
-        let workTimeValue = ("00" + workTimeHourValue).slice(-2) + ':' + ("00" + workTimeMinuteValue).slice(-2)
-        workTime.value = workTimeValue
-      });
-    });
-  }
-
-
-
+  // グラフ
   if (document.querySelector(".chart")) {
 
     // 個人毎のグラフ・グループ毎のグラフに共通するもの
@@ -78,6 +51,31 @@ document.addEventListener('turbolinks:load', () => {
     // 初期表示の始期・終期
     let chartBeginning = extractYearAndMonth(FIVE_MONTH_AGO)
     let chartEnd = extractYearAndMonth(TODAY)
+
+
+    // グラフ表示期間の変更
+    const chartPeriodBeginningYear = document.getElementById("chart_period_beginning_1i")
+    const chartPeriodBeginningMonth = document.getElementById("chart_period_beginning_2i")
+    const chartPeriodEndYear = document.getElementById("chart_period_end_1i")
+    const chartPeriodEndMonth = document.getElementById("chart_period_end_2i")
+    const chartPeriodButton = document.getElementById("chart-period-button")
+
+    const changePeriod = (func) => {
+      chartPeriodButton.addEventListener('click', function() {
+        let beginningYear = parseInt(chartPeriodBeginningYear.value)
+        let beginningMonth = parseInt(chartPeriodBeginningMonth.value)
+        let endYear = parseInt(chartPeriodEndYear.value)
+        let endMonth = parseInt(chartPeriodEndMonth.value)
+
+        if(beginningYear > endYear) {
+          alert("始期年月 < 終期年月 としてください")
+        } else if((beginningYear == endYear) && (beginningMonth >= endMonth)) {
+          alert("始期年月 < 終期年月 としてください")
+        } else {
+          func([beginningYear, beginningMonth], [endYear, endMonth])
+        }
+      })
+    }
 
 
     // 個人毎のグラフ
@@ -147,28 +145,8 @@ document.addEventListener('turbolinks:load', () => {
       // グラフの初期表示
       drawChart(chartBeginning, chartEnd)
 
-
-      // グラフ描画期間の変更
-      const showChartPeriodBeginningYear = document.getElementById("show_chart_period_beginning_1i")
-      const showChartPeriodBeginningMonth = document.getElementById("show_chart_period_beginning_2i")
-      const showChartPeriodEndYear = document.getElementById("show_chart_period_end_1i")
-      const showChartPeriodEndMonth = document.getElementById("show_chart_period_end_2i")
-      const showChartPeriodButton = document.getElementById("show-chart-period-button")
-
-      showChartPeriodButton.addEventListener('click', function() {
-        let beginningYear = parseInt(showChartPeriodBeginningYear.value)
-        let beginningMonth = parseInt(showChartPeriodBeginningMonth.value)
-        let endYear = parseInt(showChartPeriodEndYear.value)
-        let endMonth = parseInt(showChartPeriodEndMonth.value)
-
-        if(beginningYear > endYear) {
-          alert("始期年月 < 終期年月 としてください")
-        } else if((beginningYear == endYear) && (beginningMonth >= endMonth)) {
-          alert("始期年月 < 終期年月 としてください")
-        } else {
-          drawChart([beginningYear, beginningMonth], [endYear, endMonth])
-        }
-      })
+      // 表示期間変更
+      changePeriod(drawChart)
 
     }
 
@@ -268,28 +246,8 @@ document.addEventListener('turbolinks:load', () => {
       // グラフの初期表示
       drawChart(chartBeginning, chartEnd)
 
-
-      // グラフ描画期間の変更
-      const indexChartPeriodBeginningYear = document.getElementById("index_chart_period_beginning_1i")
-      const indexChartPeriodBeginningMonth = document.getElementById("index_chart_period_beginning_2i")
-      const indexChartPeriodEndYear = document.getElementById("index_chart_period_end_1i")
-      const indexChartPeriodEndMonth = document.getElementById("index_chart_period_end_2i")
-      const indexChartPeriodButton = document.getElementById("index-chart-period-button")
-
-      indexChartPeriodButton.addEventListener('click', function() {
-        let beginningYear = parseInt(indexChartPeriodBeginningYear.value)
-        let beginningMonth = parseInt(indexChartPeriodBeginningMonth.value)
-        let endYear = parseInt(indexChartPeriodEndYear.value)
-        let endMonth = parseInt(indexChartPeriodEndMonth.value)
-
-        if(beginningYear > endYear) {
-          alert("始期年月 < 終期年月 としてください")
-        } else if((beginningYear == endYear) && (beginningMonth >= endMonth)) {
-          alert("始期年月 < 終期年月 としてください")
-        } else {
-          drawChart([beginningYear, beginningMonth], [endYear, endMonth])
-        }
-      })
+      // 表示期間変更
+      changePeriod(drawChart)
 
     }
 
@@ -297,6 +255,31 @@ document.addEventListener('turbolinks:load', () => {
 
 
 
+  // usersのshowページ
+  // 入力フォーム
+  if(document.getElementById("form")) {
+    // viewのformでtime_selectを使用した箇所には、自動的にidが付与される
+    const workStartTimeHour = document.getElementById("overtime_work_start_time_4i")
+    const workStartTimeMinute = document.getElementById("overtime_work_start_time_5i")
+    const workEndTimeHour = document.getElementById("overtime_work_end_time_4i")
+    const workEndTimeMinute = document.getElementById("overtime_work_end_time_5i")
+    const workTime = document.getElementById("work-time")
+    const inputs = document.querySelectorAll('.input-time')
+
+    inputs.forEach(el => {
+      el.addEventListener('change', function(){
+        let workStartTimeValueConvertedToMinute = (Number(workStartTimeHour.value * 60) + Number(workStartTimeMinute.value))
+        let workEndTimeValueConvertedToMinute = (Number(workEndTimeHour.value * 60) + Number(workEndTimeMinute.value))
+
+        let workTimeValueConvertedToMinute = (workEndTimeValueConvertedToMinute - workStartTimeValueConvertedToMinute)
+        let workTimeHourValue = Math.floor(workTimeValueConvertedToMinute / 60)
+        let workTimeMinuteValue = workTimeValueConvertedToMinute % 60
+        // ゼロフィル
+        let workTimeValue = ("00" + workTimeHourValue).slice(-2) + ':' + ("00" + workTimeMinuteValue).slice(-2)
+        workTime.value = workTimeValue
+      });
+    });
+  }
 
   // 個人当月のテーブル
   if(document.getElementById("show-table")){
@@ -312,14 +295,7 @@ document.addEventListener('turbolinks:load', () => {
   }
 
 
-
-
-
   // usersのindexページ
-
-
-
-
   // 全ユーザー当月のテーブル
   if(document.getElementById("index-table")){
     const hourAtTheEndOfMonthList = document.querySelectorAll(".hour_at_the_end_of_month")
@@ -332,6 +308,5 @@ document.addEventListener('turbolinks:load', () => {
       }
     })
   }
-
 
 })
