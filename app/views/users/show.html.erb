@@ -1,5 +1,53 @@
 <%= Gon::Base.render_data %>
 
+
+<div class="row">
+  <div class="col-6">
+    <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#new-modal">
+      記録の追加
+    </button>
+  </div>
+  <div class="col-6">
+    <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#edit-modal">
+      記録の修正
+    </button>
+  </div>
+</div>
+
+<div class="modal fade" id="new-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <p class="modal-title">記録の追加</p>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="edit-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <p class="modal-title">記録の修正</p>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <div id="form">
   <%= form_with model: Overtime.new do |form| %>
 
@@ -36,6 +84,7 @@
     </div>
   <% end %>
 </div>
+
 
 <%= render "period_form" %>
 
