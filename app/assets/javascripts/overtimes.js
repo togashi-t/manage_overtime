@@ -256,27 +256,52 @@ document.addEventListener('turbolinks:load', () => {
 
 
   // usersのshowページ
-  // 入力フォーム
-  if(document.getElementById("form")) {
+  // 追加フォーム
+  if(document.getElementById("new-form")) {
     // viewのformでtime_selectを使用した箇所には、自動的にidが付与される
-    const workStartTimeHour = document.getElementById("overtime_work_start_time_4i")
-    const workStartTimeMinute = document.getElementById("overtime_work_start_time_5i")
-    const workEndTimeHour = document.getElementById("overtime_work_end_time_4i")
-    const workEndTimeMinute = document.getElementById("overtime_work_end_time_5i")
-    const workTime = document.getElementById("work-time")
-    const inputs = document.querySelectorAll('.input-time')
+    const newWorkStartTimeHour = document.querySelector("#new-form #overtime_work_start_time_4i")
+    const newWorkStartTimeMinute = document.querySelector("#new-form #overtime_work_start_time_5i")
+    const newWorkEndTimeHour = document.querySelector("#new-form #overtime_work_end_time_4i")
+    const newWorkEndTimeMinute = document.querySelector("#new-form #overtime_work_end_time_5i")
+    const newWorkTime = document.getElementById("new-work-time")
+    const newInputs = document.querySelectorAll('#new-form .input-time')
 
-    inputs.forEach(el => {
+    newInputs.forEach(el => {
       el.addEventListener('change', function(){
-        let workStartTimeValueConvertedToMinute = (Number(workStartTimeHour.value * 60) + Number(workStartTimeMinute.value))
-        let workEndTimeValueConvertedToMinute = (Number(workEndTimeHour.value * 60) + Number(workEndTimeMinute.value))
+        let newWorkStartTimeValueConvertedToMinute = (Number(newWorkStartTimeHour.value * 60) + Number(newWorkStartTimeMinute.value))
+        let newWorkEndTimeValueConvertedToMinute = (Number(newWorkEndTimeHour.value * 60) + Number(newWorkEndTimeMinute.value))
 
-        let workTimeValueConvertedToMinute = (workEndTimeValueConvertedToMinute - workStartTimeValueConvertedToMinute)
-        let workTimeHourValue = Math.floor(workTimeValueConvertedToMinute / 60)
-        let workTimeMinuteValue = workTimeValueConvertedToMinute % 60
+        let newWorkTimeValueConvertedToMinute = (newWorkEndTimeValueConvertedToMinute - newWorkStartTimeValueConvertedToMinute)
+        let newWorkTimeHourValue = Math.floor(newWorkTimeValueConvertedToMinute / 60)
+        let newWorkTimeMinuteValue = newWorkTimeValueConvertedToMinute % 60
         // ゼロフィル
-        let workTimeValue = ("00" + workTimeHourValue).slice(-2) + ':' + ("00" + workTimeMinuteValue).slice(-2)
-        workTime.value = workTimeValue
+        let newWorkTimeValue = ("00" + newWorkTimeHourValue).slice(-2) + ':' + ("00" + newWorkTimeMinuteValue).slice(-2)
+        newWorkTime.value = newWorkTimeValue
+      });
+    });
+  }
+
+  // 修正フォーム
+  if(document.getElementById("edit-form")) {
+    // viewのformでtime_selectを使用した箇所には、自動的にidが付与される
+    const editWorkStartTimeHour = document.querySelector("#edit-form #overtime_work_start_time_4i")
+    const editWorkStartTimeMinute = document.querySelector("#edit-form #overtime_work_start_time_5i")
+    const editWorkEndTimeHour = document.querySelector("#edit-form #overtime_work_end_time_4i")
+    const editWorkEndTimeMinute = document.querySelector("#edit-form #overtime_work_end_time_5i")
+    const editWorkTime = document.getElementById("edit-work-time")
+    const editInputs = document.querySelectorAll('#edit-form .input-time')
+
+    editInputs.forEach(el => {
+      el.addEventListener('change', function(){
+        let editWorkStartTimeValueConvertedToMinute = (Number(editWorkStartTimeHour.value * 60) + Number(editWorkStartTimeMinute.value))
+        let editWorkEndTimeValueConvertedToMinute = (Number(editWorkEndTimeHour.value * 60) + Number(editWorkEndTimeMinute.value))
+
+        let editWorkTimeValueConvertedToMinute = (editWorkEndTimeValueConvertedToMinute - editWorkStartTimeValueConvertedToMinute)
+        let editWorkTimeHourValue = Math.floor(editWorkTimeValueConvertedToMinute / 60)
+        let editWorkTimeMinuteValue = editWorkTimeValueConvertedToMinute % 60
+        // ゼロフィル
+        let editWorkTimeValue = ("00" + editWorkTimeHourValue).slice(-2) + ':' + ("00" + editWorkTimeMinuteValue).slice(-2)
+        editWorkTime.value = editWorkTimeValue
       });
     });
   }
