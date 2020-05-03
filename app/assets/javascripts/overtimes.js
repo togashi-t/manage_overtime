@@ -258,6 +258,14 @@ document.addEventListener('turbolinks:load', () => {
   // usersのshowページ
   // 追加フォーム
   if(document.getElementById("new-form")) {
+
+    // カレンダー
+    flatpickr.localize(flatpickr.l10ns.ja)
+    flatpickr("#new-calendar", {
+      disable: gon.recorded_dates,
+      defaultDate: 'today'
+    })
+
     // viewのformでtime_selectを使用した箇所には、自動的にidが付与される
     const newWorkStartTimeHour = document.querySelector("#new-form #overtime_work_start_time_4i")
     const newWorkStartTimeMinute = document.querySelector("#new-form #overtime_work_start_time_5i")
@@ -283,6 +291,7 @@ document.addEventListener('turbolinks:load', () => {
 
   // 修正フォーム
   if(document.getElementById("edit-form")) {
+
     // viewのformでtime_selectを使用した箇所には、自動的にidが付与される
     const editWorkStartTimeHour = document.querySelector("#edit-form #overtime_work_start_time_4i")
     const editWorkStartTimeMinute = document.querySelector("#edit-form #overtime_work_start_time_5i")
@@ -304,6 +313,21 @@ document.addEventListener('turbolinks:load', () => {
         editWorkTime.value = editWorkTimeValue
       });
     });
+
+    // カレンダー
+    flatpickr.localize(flatpickr.l10ns.ja)
+    const editCalendar = document.getElementById("edit-calendar")
+    // controllerから全残業記録を受け取る処理
+
+    // モーダルで日付を選択した時に、記録された残業時間を表示する関数を定義
+
+
+    flatpickr("#edit-calendar", {
+      defaultDate: 'today',
+      enable: gon.recorded_dates,
+    })
+
+
   }
 
   // 個人当月のテーブル
