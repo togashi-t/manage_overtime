@@ -283,7 +283,7 @@ document.addEventListener('turbolinks:load', () => {
         let newWorkTimeHourValue = Math.floor(newWorkTimeValueConvertedToMinute / 60)
         let newWorkTimeMinuteValue = newWorkTimeValueConvertedToMinute % 60
         // ゼロフィル
-        let newWorkTimeValue = ("00" + newWorkTimeHourValue).slice(-2) + ':' + ("00" + newWorkTimeMinuteValue).slice(-2)
+        let newWorkTimeValue = ("0" + newWorkTimeHourValue).slice(-2) + ':' + ("0" + newWorkTimeMinuteValue).slice(-2)
         newWorkTime.value = newWorkTimeValue
       });
     });
@@ -309,15 +309,15 @@ document.addEventListener('turbolinks:load', () => {
     // モーダルで日付を選択した時に、記録済残業時間を表示
     const inputTime = () => {
       let overtime = overtimesDevidedIntoHourAndMinute[editCalendar.value]
-      editWorkStartTimeHour.value = ("00" + overtime["start_hour"]).slice(-2)
+      editWorkStartTimeHour.value = ("0" + overtime["start_hour"]).slice(-2)
       editWorkStartTimeMinute.value = overtime["start_minute"]
       editWorkEndTimeHour.value = overtime["end_hour"]
-      editWorkEndTimeMinute.value = ("00" + overtime["end_minute"]).slice(-2)
+      editWorkEndTimeMinute.value = ("0" + overtime["end_minute"]).slice(-2)
       let workTimeMinute =  Number(overtime["work_minute"])
       let editWorkTimeHourValue = Math.floor(workTimeMinute / 60)
       let editWorkTimeMinuteValue = workTimeMinute % 60
        // ゼロフィル
-      editWorkTime.value =  ("00" + editWorkTimeHourValue).slice(-2) + ':' + ("00" + editWorkTimeMinuteValue).slice(-2)
+      editWorkTime.value =  ("0" + editWorkTimeHourValue).slice(-2) + ':' + ("0" + editWorkTimeMinuteValue).slice(-2)
     }
 
     flatpickr("#edit-calendar", {
@@ -335,7 +335,7 @@ document.addEventListener('turbolinks:load', () => {
         let editWorkTimeHourValue = Math.floor(editWorkTimeValueConvertedToMinute / 60)
         let editWorkTimeMinuteValue = editWorkTimeValueConvertedToMinute % 60
         // ゼロフィル
-        let editWorkTimeValue = ("00" + editWorkTimeHourValue).slice(-2) + ':' + ("00" + editWorkTimeMinuteValue).slice(-2)
+        let editWorkTimeValue = ("0" + editWorkTimeHourValue).slice(-2) + ':' + ("0" + editWorkTimeMinuteValue).slice(-2)
         editWorkTime.value = editWorkTimeValue
       });
     });
