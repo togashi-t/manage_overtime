@@ -13,9 +13,23 @@ class User < ApplicationRecord
   end
 
   # show
-  # edit-calendar用
+  # edit-calendar用A
   def recorded_dates
     self.overtimes.map(&:date)
+  end
+
+  # edit-calendar用B
+  def overtimes_devided_into_hour_and_minute
+    overtimes = self.overtimes
+    hash = Hash.new {|h, k| h[k] = {} }
+    overtimes.each do |overtime|
+      hash[overtime.date][:start_hour] = overtime.work_start_time.hour
+      hash[overtime.date][:start_minute] = overtime.work_start_time.min
+      hash[overtime.date][:end_hour] = overtime.work_end_time.hour
+      hash[overtime.date][:end_minute] = overtime.work_end_time.min
+      hash[overtime.date][:work_minute] = overtime.work_time_minute
+    end
+    hash
   end
 
   # show-chart用

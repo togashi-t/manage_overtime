@@ -300,6 +300,31 @@ document.addEventListener('turbolinks:load', () => {
     const editWorkTime = document.getElementById("edit-work-time")
     const editInputs = document.querySelectorAll('#edit-form .input-time')
 
+    // カレンダー
+    flatpickr.localize(flatpickr.l10ns.ja)
+    const editCalendar = document.getElementById("edit-calendar")
+    const overtimesDevidedIntoHourAndMinute= gon.overtimes_devided_into_hour_and_minute
+
+    // モーダルで日付を選択した時に、記録済残業時間を表示
+    const inputTime = () => {
+      let overtime = overtimesDevidedIntoHourAndMinute[editCalendar.value]
+      editWorkStartTimeHour.value = ("00" + overtime["start_hour"]).slice(-2)
+      editWorkStartTimeMinute.value = overtime["start_minute"]
+      editWorkEndTimeHour.value = overtime["end_hour"]
+      editWorkEndTimeMinute.value = ("00" + overtime["end_minute"]).slice(-2)
+      let workTimeMinute =  Number(overtime["work_minute"])
+      let editWorkTimeHourValue = Math.floor(workTimeMinute / 60)
+      let editWorkTimeMinuteValue = workTimeMinute % 60
+       // ゼロフィル
+      editWorkTime.value =  ("00" + editWorkTimeHourValue).slice(-2) + ':' + ("00" + editWorkTimeMinuteValue).slice(-2)
+    }
+
+    flatpickr("#edit-calendar", {
+      defaultDate: 'today',
+      enable: gon.recorded_dates,
+      onChange: inputTime
+    })
+
     editInputs.forEach(el => {
       el.addEventListener('change', function(){
         let editWorkStartTimeValueConvertedToMinute = (Number(editWorkStartTimeHour.value * 60) + Number(editWorkStartTimeMinute.value))
@@ -313,20 +338,6 @@ document.addEventListener('turbolinks:load', () => {
         editWorkTime.value = editWorkTimeValue
       });
     });
-
-    // カレンダー
-    flatpickr.localize(flatpickr.l10ns.ja)
-    const editCalendar = document.getElementById("edit-calendar")
-    // controllerから全残業記録を受け取る処理
-
-    // モーダルで日付を選択した時に、記録された残業時間を表示する関数を定義
-
-
-    flatpickr("#edit-calendar", {
-      defaultDate: 'today',
-      enable: gon.recorded_dates,
-    })
-
 
   }
 
