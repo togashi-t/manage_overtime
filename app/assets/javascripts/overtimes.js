@@ -304,6 +304,7 @@ document.addEventListener('turbolinks:load', () => {
     flatpickr.localize(flatpickr.l10ns.ja)
     const editCalendar = document.getElementById("edit-calendar")
     const overtimesDevidedIntoHourAndMinute= gon.overtimes_devided_into_hour_and_minute
+    const recorded_dates = Object.keys(overtimesDevidedIntoHourAndMinute)
 
     // モーダルで日付を選択した時に、記録済残業時間を表示
     const inputTime = () => {
@@ -321,7 +322,7 @@ document.addEventListener('turbolinks:load', () => {
 
     flatpickr("#edit-calendar", {
       defaultDate: 'today',
-      enable: gon.recorded_dates,
+      enable: recorded_dates,
       onChange: inputTime
     })
 

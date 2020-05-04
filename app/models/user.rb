@@ -13,12 +13,7 @@ class User < ApplicationRecord
   end
 
   # show
-  # edit-calendar用A
-  def recorded_dates
-    self.overtimes.map(&:date)
-  end
-
-  # edit-calendar用B
+  # edit-calendar用
   def overtimes_devided_into_hour_and_minute
     overtimes = self.overtimes
     hash = Hash.new {|h, k| h[k] = {} }
