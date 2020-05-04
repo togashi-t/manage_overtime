@@ -254,81 +254,99 @@ document.addEventListener('turbolinks:load', () => {
   }
 
 
+  // 時間入力フォーム（usersのshowページ）
+  if(document.getElementById("input-time-form")) {
 
-  // usersのshowページ
-  // 追加フォーム
-  if(document.getElementById("new-form")) {
-
-    // カレンダー
+    // 共通部分
     flatpickr.localize(flatpickr.l10ns.ja)
-    flatpickr("#new-calendar", {
-      disable: gon.recorded_dates,
-      defaultDate: 'today'
-    })
+    const overtimesDevidedIntoHourAndMinute= gon.overtimes_devided_into_hour_and_minute
+    const recorded_dates = Object.keys(overtimesDevidedIntoHourAndMinute)
 
-    // viewのformでtime_selectを使用した箇所には、自動的にidが付与される
-    const newWorkStartTimeHour = document.querySelector("#new-form #overtime_work_start_time_4i")
-    const newWorkStartTimeMinute = document.querySelector("#new-form #overtime_work_start_time_5i")
-    const newWorkEndTimeHour = document.querySelector("#new-form #overtime_work_end_time_4i")
-    const newWorkEndTimeMinute = document.querySelector("#new-form #overtime_work_end_time_5i")
-    const newWorkTime = document.getElementById("new-work-time")
-    const newInputs = document.querySelectorAll('#new-form .input-time')
+    // 追加フォーム
+    if(document.getElementById("new-form")) {
 
-    newInputs.forEach(el => {
-      el.addEventListener('change', function(){
-        let newWorkStartTimeValueConvertedToMinute = (Number(newWorkStartTimeHour.value * 60) + Number(newWorkStartTimeMinute.value))
-        let newWorkEndTimeValueConvertedToMinute = (Number(newWorkEndTimeHour.value * 60) + Number(newWorkEndTimeMinute.value))
+      // カレンダー
+      flatpickr("#new-calendar", {
+        disable: recorded_dates,
+        defaultDate: 'today'
+      })
 
-        let newWorkTimeValueConvertedToMinute = (newWorkEndTimeValueConvertedToMinute - newWorkStartTimeValueConvertedToMinute)
-        let newWorkTimeHourValue = Math.floor(newWorkTimeValueConvertedToMinute / 60)
-        let newWorkTimeMinuteValue = newWorkTimeValueConvertedToMinute % 60
-        // ゼロフィル
-        let newWorkTimeValue = ("00" + newWorkTimeHourValue).slice(-2) + ':' + ("00" + newWorkTimeMinuteValue).slice(-2)
-        newWorkTime.value = newWorkTimeValue
+      // viewのformでtime_selectを使用した箇所には、自動的にidが付与される
+      const newWorkStartTimeHour = document.querySelector("#new-form #overtime_work_start_time_4i")
+      const newWorkStartTimeMinute = document.querySelector("#new-form #overtime_work_start_time_5i")
+      const newWorkEndTimeHour = document.querySelector("#new-form #overtime_work_end_time_4i")
+      const newWorkEndTimeMinute = document.querySelector("#new-form #overtime_work_end_time_5i")
+      const newWorkTime = document.getElementById("new-work-time")
+      const newInputs = document.querySelectorAll('#new-form .input-time')
+
+      newInputs.forEach(el => {
+        el.addEventListener('change', function(){
+          let newWorkStartTimeValueConvertedToMinute = (Number(newWorkStartTimeHour.value * 60) + Number(newWorkStartTimeMinute.value))
+          let newWorkEndTimeValueConvertedToMinute = (Number(newWorkEndTimeHour.value * 60) + Number(newWorkEndTimeMinute.value))
+
+          let newWorkTimeValueConvertedToMinute = (newWorkEndTimeValueConvertedToMinute - newWorkStartTimeValueConvertedToMinute)
+          let newWorkTimeHourValue = Math.floor(newWorkTimeValueConvertedToMinute / 60)
+          let newWorkTimeMinuteValue = newWorkTimeValueConvertedToMinute % 60
+          // ゼロフィル
+          let newWorkTimeValue = ("0" + newWorkTimeHourValue).slice(-2) + ':' + ("0" + newWorkTimeMinuteValue).slice(-2)
+          newWorkTime.value = newWorkTimeValue
+        });
       });
-    });
+    }
+
+    // 修正フォーム
+    if(document.getElementById("edit-form")) {
+
+      // viewのformでtime_selectを使用した箇所には、自動的にidが付与される
+      const editWorkStartTimeHour = document.querySelector("#edit-form #overtime_work_start_time_4i")
+      const editWorkStartTimeMinute = document.querySelector("#edit-form #overtime_work_start_time_5i")
+      const editWorkEndTimeHour = document.querySelector("#edit-form #overtime_work_end_time_4i")
+      const editWorkEndTimeMinute = document.querySelector("#edit-form #overtime_work_end_time_5i")
+      const editWorkTime = document.getElementById("edit-work-time")
+      const editInputs = document.querySelectorAll('#edit-form .input-time')
+
+      // カレンダー
+      const editCalendar = document.getElementById("edit-calendar")
+
+      // モーダルで日付を選択した時に、記録済残業時間を表示
+      const inputTime = () => {
+        let overtime = overtimesDevidedIntoHourAndMinute[editCalendar.value]
+        editWorkStartTimeHour.value = ("0" + overtime["start_hour"]).slice(-2)
+        editWorkStartTimeMinute.value = overtime["start_minute"]
+        editWorkEndTimeHour.value = overtime["end_hour"]
+        editWorkEndTimeMinute.value = ("0" + overtime["end_minute"]).slice(-2)
+        let workTimeMinute =  Number(overtime["work_minute"])
+        let editWorkTimeHourValue = Math.floor(workTimeMinute / 60)
+        let editWorkTimeMinuteValue = workTimeMinute % 60
+         // ゼロフィル
+        editWorkTime.value =  ("0" + editWorkTimeHourValue).slice(-2) + ':' + ("0" + editWorkTimeMinuteValue).slice(-2)
+      }
+
+      flatpickr("#edit-calendar", {
+        defaultDate: 'today',
+        enable: recorded_dates,
+        onChange: inputTime
+      })
+
+      editInputs.forEach(el => {
+        el.addEventListener('change', function(){
+          let editWorkStartTimeValueConvertedToMinute = (Number(editWorkStartTimeHour.value * 60) + Number(editWorkStartTimeMinute.value))
+          let editWorkEndTimeValueConvertedToMinute = (Number(editWorkEndTimeHour.value * 60) + Number(editWorkEndTimeMinute.value))
+
+          let editWorkTimeValueConvertedToMinute = (editWorkEndTimeValueConvertedToMinute - editWorkStartTimeValueConvertedToMinute)
+          let editWorkTimeHourValue = Math.floor(editWorkTimeValueConvertedToMinute / 60)
+          let editWorkTimeMinuteValue = editWorkTimeValueConvertedToMinute % 60
+          // ゼロフィル
+          let editWorkTimeValue = ("0" + editWorkTimeHourValue).slice(-2) + ':' + ("0" + editWorkTimeMinuteValue).slice(-2)
+          editWorkTime.value = editWorkTimeValue
+        });
+      });
+
+    }
+
   }
 
-  // 修正フォーム
-  if(document.getElementById("edit-form")) {
 
-    // viewのformでtime_selectを使用した箇所には、自動的にidが付与される
-    const editWorkStartTimeHour = document.querySelector("#edit-form #overtime_work_start_time_4i")
-    const editWorkStartTimeMinute = document.querySelector("#edit-form #overtime_work_start_time_5i")
-    const editWorkEndTimeHour = document.querySelector("#edit-form #overtime_work_end_time_4i")
-    const editWorkEndTimeMinute = document.querySelector("#edit-form #overtime_work_end_time_5i")
-    const editWorkTime = document.getElementById("edit-work-time")
-    const editInputs = document.querySelectorAll('#edit-form .input-time')
-
-    editInputs.forEach(el => {
-      el.addEventListener('change', function(){
-        let editWorkStartTimeValueConvertedToMinute = (Number(editWorkStartTimeHour.value * 60) + Number(editWorkStartTimeMinute.value))
-        let editWorkEndTimeValueConvertedToMinute = (Number(editWorkEndTimeHour.value * 60) + Number(editWorkEndTimeMinute.value))
-
-        let editWorkTimeValueConvertedToMinute = (editWorkEndTimeValueConvertedToMinute - editWorkStartTimeValueConvertedToMinute)
-        let editWorkTimeHourValue = Math.floor(editWorkTimeValueConvertedToMinute / 60)
-        let editWorkTimeMinuteValue = editWorkTimeValueConvertedToMinute % 60
-        // ゼロフィル
-        let editWorkTimeValue = ("00" + editWorkTimeHourValue).slice(-2) + ':' + ("00" + editWorkTimeMinuteValue).slice(-2)
-        editWorkTime.value = editWorkTimeValue
-      });
-    });
-
-    // カレンダー
-    flatpickr.localize(flatpickr.l10ns.ja)
-    const editCalendar = document.getElementById("edit-calendar")
-    // controllerから全残業記録を受け取る処理
-
-    // モーダルで日付を選択した時に、記録された残業時間を表示する関数を定義
-
-
-    flatpickr("#edit-calendar", {
-      defaultDate: 'today',
-      enable: gon.recorded_dates,
-    })
-
-
-  }
 
   // 個人当月のテーブル
   if(document.getElementById("show-table")){

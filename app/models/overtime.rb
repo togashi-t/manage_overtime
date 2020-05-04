@@ -3,24 +3,6 @@ class Overtime < ApplicationRecord
   attr_accessor :work_time
   before_validation :convert_work_time_to_work_time_minute
 
-  # show-table用
-  def self.this_month_overtimes(userid)
-    this_month = Time.zone.now.all_month
-    Overtime.where(user_id: userid).where(date: this_month)
-  end
-
-  # show-chart用
-  def self.monthly_chart_data(userid)
-    # {[2019, 4]=>○○○○, [2019, 5]=>○○○○, …} を生成
-    year_and_month_minute_data = Overtime.where(user_id: userid).group("DATE_FORMAT(date,'%Y年%c月')").sum(:work_time_minute)
-    # {["2019年4月"=>○○○○, "2019年4月"=>○○○○, …} に成形
-    monthly_hour_data = {}
-    year_and_month_minute_data.each do |key, value|
-      monthly_hour_data[key] = (value.to_f / 60).floor(1)
-    end
-    monthly_hour_data
-  end
-
   # index-chart用
   def self.group_monthly_hour_data
     # {["A", "2019年4月"]=>1828, ["A", "2019年5月"]=>6418, ...} を生成

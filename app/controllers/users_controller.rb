@@ -5,11 +5,8 @@ class UsersController < ApplicationController
   end
 
   def show
-    # User.find(params[:id])は後にcurrent_userに修正予定
-    gon.recorded_dates = User.find(params[:id]).overtimes.map(&:date)
-    # edit-calendar用のデータ渡しを追加予定
-    # gon~ = ~
-    gon.monthly_chart_data = Overtime.monthly_chart_data(params[:id])
-    @overtimes = Overtime.this_month_overtimes(params[:id])
+    gon.overtimes_devided_into_hour_and_minute = User.find(params[:id]).overtimes_devided_into_hour_and_minute
+    gon.monthly_chart_data = User.find(params[:id]).monthly_chart_data
+    @overtimes = User.find(params[:id]).this_month_overtimes
   end
 end
