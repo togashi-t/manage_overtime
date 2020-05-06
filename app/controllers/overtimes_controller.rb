@@ -1,6 +1,6 @@
 class OvertimesController < ApplicationController
-  def index
-  end
+  before_action :authenticate_user!
+
 
   def create
     @overtime = current_user.overtimes.build(overtime_params)
