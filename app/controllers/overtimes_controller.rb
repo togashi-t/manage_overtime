@@ -4,7 +4,13 @@ class OvertimesController < ApplicationController
 
   def create
     @overtime = current_user.overtimes.build(overtime_params)
-    @overtime.save!
+    date = @overtime.date&.strftime("%Y年%-m月%-d日")
+    if @overtime.save!
+      flash[:info] = "#{date}の記録を追加しました"
+    else
+      flash[:danger] = "エラーが発生しました"
+    end
+    redirect_to user_path(current_user)
   end
 
   private
