@@ -1,18 +1,19 @@
 <%= Gon::Base.render_data %>
 
-
-<div class="row">
-  <div class="col-6">
-    <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#new-modal">
-      記録の追加
-    </button>
+<% if your_page? %>
+  <div class="row">
+    <div class="col-6">
+      <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#new-modal">
+        記録の追加
+      </button>
+    </div>
+    <div class="col-6">
+      <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#edit-modal">
+        記録の修正
+      </button>
+    </div>
   </div>
-  <div class="col-6">
-    <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#edit-modal">
-      記録の修正
-    </button>
-  </div>
-</div>
+<% end %>
 
 
 <%= render "modal", action: "new", title: "記録の追加" %>
