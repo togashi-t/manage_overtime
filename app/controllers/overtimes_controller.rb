@@ -13,6 +13,16 @@ class OvertimesController < ApplicationController
     redirect_to user_path(current_user)
   end
 
+  def update
+    @overtime = current_user.overtimes.find_by(date: params[:overtime][:date])
+    date = @overtime.date&.strftime("%Y年%-m月%-d日")
+    if @overtime.update!(overtime_params)
+      flash[:info] = "#{date}の記録を修正しました"
+    elsif
+      flash[:danger] = "エラーが発生しました"
+    end
+  end
+
   private
 
     def overtime_params
