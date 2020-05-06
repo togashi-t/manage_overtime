@@ -21,6 +21,7 @@ class OvertimesController < ApplicationController
     elsif
       flash[:danger] = "エラーが発生しました"
     end
+    redirect_to user_path(current_user)
   end
 
   private
