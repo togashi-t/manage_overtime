@@ -312,8 +312,8 @@ document.addEventListener('turbolinks:load', () => {
       const inputTime = () => {
         let overtime = overtimesDevidedIntoHourAndMinute[editCalendar.value]
         editWorkStartTimeHour.value = ("0" + overtime["start_hour"]).slice(-2)
-        editWorkStartTimeMinute.value = overtime["start_minute"]
-        editWorkEndTimeHour.value = overtime["end_hour"]
+        editWorkStartTimeMinute.value = ("0" + overtime["start_minute"]).slice(-2)
+        editWorkEndTimeHour.value = ("0" + overtime["end_hour"]).slice(-2)
         editWorkEndTimeMinute.value = ("0" + overtime["end_minute"]).slice(-2)
         let workTimeMinute =  Number(overtime["work_minute"])
         let editWorkTimeHourValue = Math.floor(workTimeMinute / 60)
