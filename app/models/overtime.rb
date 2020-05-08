@@ -2,6 +2,10 @@ class Overtime < ApplicationRecord
   belongs_to :user
   attr_accessor :work_time
   before_validation :convert_work_time_to_work_time_minute
+  validates :date, presence: true, uniqueness: { scope: :user_id }
+  validates :work_start_time, presence: true
+  validates :work_end_time, presence: true
+  validates :work_time_minute, presence: true
 
   # index-chart用
   def self.group_monthly_hour_data

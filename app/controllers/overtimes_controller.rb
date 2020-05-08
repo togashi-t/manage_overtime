@@ -1,10 +1,35 @@
 class OvertimesController < ApplicationController
-  def index
-  end
+  before_action :authenticate_user!
+
 
   def create
     @overtime = current_user.overtimes.build(overtime_params)
-    @overtime.save!
+    date = @overtime.date&.strftime("%Y年%-m月%-d日")
+    if @overtime.save!
+      flash[:info] = "#{date}の記録を追加しました"
+    else
+      flash[:danger] = "エラーが発生しました"
+    end
+    redirect_to user_path(current_user)
+  end
+
+  def update
+    @overtime = current_user.overtimes.find_by(date: params[:overtime][:date])
+    date = @overtime.date&.strftime("%Y年%-m月%-d日")
+    if params[:destroy].nil?
+      if @overtime.update!(overtime_params)
+        flash[:info] = "#{date}の記録を修正しました"
+      else
+        flash[:danger] = "エラーが発生しました"
+      end
+    else
+      if @overtime.destroy!
+        flash[:info] = "#{date}の記録を削除しました"
+      else
+        flash[:danger] = "エラーが発生しました"
+      end
+    end
+    redirect_to user_path(current_user)
   end
 
   private
