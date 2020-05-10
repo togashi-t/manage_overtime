@@ -292,6 +292,7 @@ document.addEventListener('turbolinks:load', () => {
           newWorkTime.value = newWorkTimeValue
         });
       });
+
     }
 
     // 修正フォーム
@@ -343,6 +344,22 @@ document.addEventListener('turbolinks:load', () => {
       });
 
     }
+
+
+
+    // ajax
+    const inputTimeForm = document.getElementById("input-time-form")
+    // console.log(inputTimeForm)
+    inputTimeForm.addEventListener("ajax:success", function() {
+      alert("成功")
+    })
+    inputTimeForm.addEventListener("ajax:error", function(e) {
+      console.log(e)
+      console.log(e.detail[2].responseText)
+
+      message = e.detail[2].responseText
+      document.getElementById("flash-message").innerHTML = message
+    })
 
   }
 
