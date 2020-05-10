@@ -6,6 +6,7 @@ class Overtime < ApplicationRecord
   validates :work_start_time, presence: true
   validates :work_end_time, presence: true
   validates :work_time_minute, presence: true
+  validate :end_time_later_than_start_time?
 
   # index-chart用
   def self.group_monthly_hour_data
@@ -27,9 +28,15 @@ class Overtime < ApplicationRecord
     hash
   end
 
+  def end_time_later_than_start_time?
+    if self.work_start_time > self.work_end_time
+      self.errors.add(:work_start_time, " > 終了時刻となっています。")
+    end
+  end
+
   private
 
     def convert_work_time_to_work_time_minute
-      self.work_time_minute = Tod::TimeOfDay.parse(self.work_time).to_i / 60
+      self.work_time_minute = Tod::TimeOfDay.parse(self.work_time).to_i / 60 rescue nil
     end
 end
