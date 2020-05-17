@@ -1,7 +1,6 @@
 class OvertimesController < ApplicationController
   before_action :authenticate_user!
 
-
   def create
     @overtime = current_user.overtimes.build(overtime_params)
     date = @overtime.date&.strftime("%Y年%-m月%-d日")
