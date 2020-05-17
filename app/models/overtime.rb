@@ -30,7 +30,7 @@ class Overtime < ApplicationRecord
 
   def end_time_later_than_start_time?
     if self.work_start_time > self.work_end_time
-      self.errors.add(:work_start_time, "開始時刻 > 終了時刻となっています。")
+      self.errors.add(:work_start_time, " > 終了時刻となっています。")
     end
   end
 

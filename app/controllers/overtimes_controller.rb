@@ -12,8 +12,8 @@ class OvertimesController < ApplicationController
         format.js { render js: "window.location = '#{user_path(current_user)}'" }
       else
         @overtime.errors.each do |name, msg|
-          binding.pry
-          flash.now[name] = msg
+          jp_name = I18n.t("activerecord.attributes.overtime")[name]
+          flash.now[jp_name] = msg
           # flash.now[Overtime.human_attribute_name(:name)] = msg
         end
         format.html { redirect_to user_path(current_user) }
