@@ -45,14 +45,9 @@ class User < ApplicationRecord
     self.overtimes.where(date: this_month)
   end
 
-
-
-
-
   # show-table用
   def self.this_month_overtimes(userid)
     this_month = Time.zone.now.all_month
     Overtime.where(user_id: userid).where(date: this_month)
   end
-
 end

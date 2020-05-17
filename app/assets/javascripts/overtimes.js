@@ -289,10 +289,17 @@ document.addEventListener('turbolinks:load', () => {
           let newWorkTimeMinuteValue = newWorkTimeValueConvertedToMinute % 60
           // ゼロフィル
           let newWorkTimeValue = ("0" + newWorkTimeHourValue).slice(-2) + ':' + ("0" + newWorkTimeMinuteValue).slice(-2)
-          newWorkTime.value = newWorkTimeValue
+          newWorkTime.value = (newWorkTimeValueConvertedToMinute > 0) ? newWorkTimeValue : "00:00"
         });
       });
-    }
+
+      // ajax
+      document.getElementById("new-form").addEventListener("ajax:error", function(e) {
+        message = e.detail[2].responseText
+        document.getElementById("new-error-flash").innerHTML = message
+      })
+
+      }
 
     // 修正フォーム
     if(document.getElementById("edit-form")) {
