@@ -289,7 +289,7 @@ document.addEventListener('turbolinks:load', () => {
           let newWorkTimeMinuteValue = newWorkTimeValueConvertedToMinute % 60
           // ゼロフィル
           let newWorkTimeValue = ("0" + newWorkTimeHourValue).slice(-2) + ':' + ("0" + newWorkTimeMinuteValue).slice(-2)
-          newWorkTime.value = newWorkTimeValue
+          newWorkTime.value = (newWorkTimeValueConvertedToMinute > 0) ? newWorkTimeValue : "00:00"
         });
       });
 

@@ -5,7 +5,7 @@ class Overtime < ApplicationRecord
   validates :date, presence: true, uniqueness: { scope: :user_id }
   validates :work_start_time, presence: true
   validates :work_end_time, presence: true
-  validates :work_time_minute, presence: true
+  validates :work_time_minute, presence: true, numericality: { greater_than: 0 }
   validate :end_time_later_than_start_time?
 
   # index-chart用
@@ -37,6 +37,6 @@ class Overtime < ApplicationRecord
   private
 
     def convert_work_time_to_work_time_minute
-      self.work_time_minute = Tod::TimeOfDay.parse(self.work_time).to_i / 60 rescue nil
+      self.work_time_minute = Tod::TimeOfDay.parse(self.work_time).to_i / 60 rescue 0
     end
 end
