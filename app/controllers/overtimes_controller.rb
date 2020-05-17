@@ -6,13 +6,15 @@ class OvertimesController < ApplicationController
     @overtime = current_user.overtimes.build(overtime_params)
     date = @overtime.date&.strftime("%Y年%-m月%-d日")
     respond_to do |format|
-      if @overtime.save!
+      if @overtime.save
         flash[:info] = "#{date}の記録を追加しました"
         format.html { redirect_to user_path(current_user) }
         format.js { render js: "window.location = '#{user_path(current_user)}'" }
       else
         @overtime.errors.each do |name, msg|
+          binding.pry
           flash.now[name] = msg
+          # flash.now[Overtime.human_attribute_name(:name)] = msg
         end
         format.html { redirect_to user_path(current_user) }
         format.js { render partial: "shared/flash_messages", status: :unprocessable_entity }

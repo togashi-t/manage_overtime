@@ -358,7 +358,7 @@ document.addEventListener('turbolinks:load', () => {
       console.log(e.detail[2].responseText)
 
       message = e.detail[2].responseText
-      document.getElementById("flash-message").innerHTML = message
+      document.getElementById("error-flash").innerHTML = message
     })
 
   }
