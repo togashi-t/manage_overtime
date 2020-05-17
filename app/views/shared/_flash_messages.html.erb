@@ -1,5 +1,5 @@
 <% flash.each do |name, msg| %>
-  <% if name == ("notice" || "info") %>
+  <% if name.in?(["notice", "info"]) %>
     <div class="alert alert-info" role="alert" id="alert">
       <a href="#" class="close" data-dismiss="alert">×</a>
       <%= msg %>
