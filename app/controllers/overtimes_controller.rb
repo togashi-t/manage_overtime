@@ -37,7 +37,7 @@ class OvertimesController < ApplicationController
         render partial: "shared/flash_messages", status: :unprocessable_entity
       end
     else
-      @overtime.destroy
+      @overtime.destroy!
       flash[:info] = "#{date}の記録を削除しました"
       render js: "window.location = '#{user_path(current_user)}'"
     end
