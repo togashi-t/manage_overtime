@@ -325,12 +325,12 @@ document.addEventListener('turbolinks:load', () => {
         let workTimeMinute =  Number(overtime["work_minute"])
         let editWorkTimeHourValue = Math.floor(workTimeMinute / 60)
         let editWorkTimeMinuteValue = workTimeMinute % 60
-         // ゼロフィル
+        // ゼロフィル
         editWorkTime.value =  ("0" + editWorkTimeHourValue).slice(-2) + ':' + ("0" + editWorkTimeMinuteValue).slice(-2)
       }
 
       flatpickr("#edit-calendar", {
-        defaultDate: 'today',
+        defaultDate: recorded_dates[recorded_dates.length - 1],
         enable: recorded_dates,
         onChange: inputTime
       })
@@ -345,9 +345,15 @@ document.addEventListener('turbolinks:load', () => {
           let editWorkTimeMinuteValue = editWorkTimeValueConvertedToMinute % 60
           // ゼロフィル
           let editWorkTimeValue = ("0" + editWorkTimeHourValue).slice(-2) + ':' + ("0" + editWorkTimeMinuteValue).slice(-2)
-          editWorkTime.value = editWorkTimeValue
+          editWorkTime.value = (editWorkTimeValueConvertedToMinute > 0) ? editWorkTimeValue : "00:00"
         });
       });
+
+      // ajax
+      document.getElementById("edit-form").addEventListener("ajax:error", function(e) {
+        message = e.detail[2].responseText
+        document.getElementById("edit-error-flash").innerHTML = message
+      })
 
     }
 
