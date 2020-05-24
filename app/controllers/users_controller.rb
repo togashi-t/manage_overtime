@@ -8,5 +8,6 @@ class UsersController < ApplicationController
     gon.overtimes_devided_into_hour_and_minute = User.find(params[:id]).overtimes_devided_into_hour_and_minute
     gon.monthly_chart_data = User.find(params[:id]).monthly_chart_data
     @overtimes = User.find(params[:id]).this_month_overtimes
+    @requests = User.find(params[:id]).requests
   end
 end
