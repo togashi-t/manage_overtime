@@ -1,0 +1,6 @@
+<div id="request-form" class="mt-2 mb-5 container">
+  <%= form_with model: Request.new do |f| %>
+    <%= f.text_area :detail, placeholder: "仲間に頼みたい事はありませんか？", class: "form-control mb-3" %>
+    <%= f.submit '追加', class: 'btn btn-primary' %>
+  <% end %>
+</div>
