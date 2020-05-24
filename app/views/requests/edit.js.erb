@@ -1,0 +1,3 @@
+const requestForm = document.getElementById("request-form")
+requestForm.insertAdjacentHTML('beforebegin','<p class="text-center text-primary font-weight-bold">内容を修正してください</p>')
+requestForm.innerHTML = "<%= j(render partial: "requests/edit_form", locals: { request: @request }) %>"
