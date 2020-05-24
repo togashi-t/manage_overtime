@@ -1,5 +1,15 @@
 <%= Gon::Base.render_data %>
 
+<h4 class="text-center mt-5 mb-3">＜頼みたい事＞</h4>
+<div id="request-form" class="mt-2 mb-5 container">
+  <%= form_with model: Request.new do |f| %>
+    <%= f.text_area :detail, placeholder: "仲間に頼みたい事はありませんか？", class: "form-control mb-3" %>
+    <%= f.submit '追加', class: 'btn btn-primary' %>
+  <% end %>
+</div>
+
+
+<h4 class="text-center mt-5 mb-3">＜残業の記録＞</h4>
 <% if your_page? %>
   <div class="row">
     <div class="col-6">
