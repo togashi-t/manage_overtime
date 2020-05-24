@@ -33,7 +33,7 @@ class RequestsController < ApplicationController
 
   def destroy
     @request = current_user.requests.find_by(id: params[:id])
-    @request.destroy
+    @request.destroy!
     flash[:notice] = "頼み事の削除が出来ました"
     redirect_to user_path(current_user)
   end
