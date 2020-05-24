@@ -14,6 +14,7 @@
       <th class="text-center">氏名</th>
       <th class="text-center">現時点</th>
       <th class="text-center">月末（推計値）</th>
+      <th class="text-center">HELP!</th>
     </tr>
   </thead>
   <tbody>
@@ -23,6 +24,7 @@
         <td class="text-center"><%= link_to user.name, user_path(user.id) %></td>
         <td class="text-right hour_now"><%= convert_to_hour(user.this_month_minute) %></td>
         <td class="text-right hour_at_the_end_of_month"><%= convert_to_hour(estimate_value_at_the_end_of_month(user.this_month_minute)) %></td>
+        <td class="text-center"><%= link_to "!", user_path(user.id) if user.request? %></td>
       </tr>
     <% end %>
   </tbody>

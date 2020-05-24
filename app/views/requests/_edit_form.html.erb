@@ -1,0 +1,4 @@
+<%= form_with model: request, method: :patch do |f| %>
+  <%= f.text_area :detail, value: request.detail, class: "form-control mb-3" %>
+  <%= f.submit '修正', class: 'btn btn-primary' %>
+<% end %>

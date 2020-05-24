@@ -3,6 +3,7 @@ ja:
     models:
       user: ユーザー
       overtime: 残業
+      request: 頼み事
     attributes:
       overtime:
         date: 月日
@@ -10,6 +11,8 @@ ja:
         work_end_time: 終了時刻
         work_time: 残業時間
         work_time_minute: 残業時間
+      request:
+        detail: 内容
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'
