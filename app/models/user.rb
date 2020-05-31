@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :overtimes, dependent: :destroy
   has_many :requests, dependent: :destroy
+  validates :name, presence: true
+  validates :group, presence: true
 
   # index
   # index-table用
