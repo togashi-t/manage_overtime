@@ -74,7 +74,7 @@ RSpec.describe User, type: :model do
 
     it "月毎の合計残業時間（単位：時間）のハッシュを返す" do
       hash = {}
-      key = overtime_a.date.strftime('%Y年%-m月')
+      key = overtime_a.date.strftime("%Y年%-m月")
       value_m = overtime_a.work_time_minute + overtime_b.work_time_minute
       value_h = (value_m.to_f / 60).floor(1)
       hash[key] = value_h
@@ -90,5 +90,4 @@ RSpec.describe User, type: :model do
       expect(other_user.request?).to eq false
     end
   end
-
 end

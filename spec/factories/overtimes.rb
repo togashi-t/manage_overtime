@@ -1,5 +1,4 @@
 FactoryBot.define do
-
   WORK_START_TIME = Tod::TimeOfDay.parse("17:15")
   MIN_WORK_END_TIME = Tod::TimeOfDay.parse("17:16")
   MIN_WORK_END_TIME_MINUTE = MIN_WORK_END_TIME.second_of_day / 60
