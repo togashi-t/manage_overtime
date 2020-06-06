@@ -8,7 +8,7 @@
   <% end %>
 
   <div class="mt-3 mb-5", id="request-list">
-    <% @requests.each do |request| %>
+    <% @user.requests.each do |request| %>
       <div class="row mt-2 mb-3 pl-2">
         <div class="col-9 mr-2 border rounded">
           <%= request.detail %>
@@ -61,7 +61,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @overtimes.each do |overtime| %>
+      <% @user.this_month_overtimes.each do |overtime| %>
         <tr>
           <td class="text-center"><%= extract_date(overtime.date) %></td>
           <td class="text-center day"><%= extract_day(overtime.date) %></td>
@@ -75,7 +75,7 @@
         <td class="text-center"></td>
         <td class="text-center"></td>
         <td class="text-right">合計</td>
-        <td class="text-center"><%= convert_to_hour_and_minute(@overtimes.sum(:work_time_minute)) %></td>
+        <td class="text-center"><%= convert_to_hour_and_minute(@user.this_month_overtimes.sum(:work_time_minute)) %></td>
       </tr>
     </tbody>
   </table>
