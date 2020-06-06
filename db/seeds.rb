@@ -78,3 +78,11 @@ end
 
 Overtime.create!(overtimes)
 puts "残業日時の初期データを投入しました。"
+
+
+# request
+DETAIL_1 = "園芸産地づくり事業のポンチ絵作成を手伝ってほしいです。"
+DETAIL_2 = "機械導入補助事業の完成確認検査に、私の代役で行ってもらいたいです。"
+User.first.requests.create(detail: DETAIL_1)
+User.second.requests.create(detail: DETAIL_2)
+puts "頼みたい事の初期データを投入しました。"
