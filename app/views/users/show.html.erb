@@ -1,86 +1,83 @@
 <%= Gon::Base.render_data %>
 
-<h4 class="text-center mt-5 mb-3">＜頼みたい事＞</h4>
-<% if your_page? %>
-  <%= render "requests/new_form" %>
-<% end %>
-
-<div class="mt-3 mb-5 container", id="request-list">
-  <% @requests.each do |request| %>
-    <div class="row mt-2 mb-3 pl-2">
-      <div class="col-9 mr-2 border rounded">
-        <%= request.detail %>
-      </div>
-      <% if your_page? %>
-        <div class="mr-3">
-          <%= link_to "編集", edit_request_path(request.id), class: "btn btn-success edit-btn", remote: true %>
-        </div>
-        <div>
-          <%= link_to "削除", request_path(request.id), method: :delete, class: "btn btn-danger", data: {confirm: "削除しますか？"} %>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
-</div>
-
-<h4 class="text-center mt-5 mb-3">＜残業の記録＞</h4>
-
 <div class="container">
 
+  <h4 class="text-center mt-5 mb-3">＜頼みたい事＞</h4>
+  <% if your_page? %>
+    <%= render "requests/new_form" %>
+  <% end %>
 
-<% if your_page? %>
-  <div class="row">
-    <div class="col-6">
-      <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#new-modal">
-        記録の追加
-      </button>
-    </div>
-    <div class="col-6">
-      <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#edit-modal">
-        記録の修正
-      </button>
-    </div>
-  </div>
-<% end %>
-
-
-<%= render "modal", action: "new", title: "記録の追加" %>
-<%= render "modal", action: "edit", title: "記録の修正" %>
-
-
-<%= render "period_form" %>
-
-<canvas id="show-chart" class="chart mt-5 mb-5"></canvas>
-
-<p>今月の残業</p>
-<table class="table table-hover" id="show-table">
-  <thead>
-    <tr>
-      <th class="text-center">日付</th>
-      <th class="text-center">曜日</th>
-      <th class="text-center">開始時刻</th>
-      <th class="text-center">終了時刻</th>
-      <th class="text-center">時間数</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @overtimes.each do |overtime| %>
-      <tr>
-        <td class="text-center"><%= extract_date(overtime.date) %></td>
-        <td class="text-center day"><%= extract_day(overtime.date) %></td>
-        <td class="text-center"><%= extract_time(overtime.work_start_time) %></td>
-        <td class="text-center"><%= extract_time(overtime.work_end_time) %></td>
-        <td class="text-center"><%= convert_to_hour_and_minute(overtime.work_time_minute) %></td>
-      </tr>
+  <div class="mt-3 mb-5", id="request-list">
+    <% @requests.each do |request| %>
+      <div class="row mt-2 mb-3 pl-2">
+        <div class="col-9 mr-2 border rounded">
+          <%= request.detail %>
+        </div>
+        <% if your_page? %>
+          <div class="mr-3">
+            <%= link_to "編集", edit_request_path(request.id), class: "btn btn-success edit-btn", remote: true %>
+          </div>
+          <div>
+            <%= link_to "削除", request_path(request.id), method: :delete, class: "btn btn-danger", data: {confirm: "削除しますか？"} %>
+          </div>
+        <% end %>
+      </div>
     <% end %>
-    <tr>
-      <td class="text-center"></td>
-      <td class="text-center"></td>
-      <td class="text-center"></td>
-      <td class="text-right">合計</td>
-      <td class="text-center"><%= convert_to_hour_and_minute(@overtimes.sum(:work_time_minute)) %></td>
-    </tr>
-  </tbody>
-</table>
+  </div>
+
+  <h4 class="text-center mt-5 mb-3">＜残業の記録＞</h4>
+  <% if your_page? %>
+    <div class="row">
+      <div class="col-6">
+        <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#new-modal">
+          記録の追加
+        </button>
+      </div>
+      <div class="col-6">
+        <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#edit-modal">
+          記録の修正
+        </button>
+      </div>
+    </div>
+  <% end %>
+
+
+  <%= render "modal", action: "new", title: "記録の追加" %>
+  <%= render "modal", action: "edit", title: "記録の修正" %>
+
+
+  <%= render "period_form" %>
+  <canvas id="show-chart" class="chart mt-5 mb-5"></canvas>
+
+  <p>今月の残業</p>
+  <table class="table table-hover" id="show-table">
+    <thead>
+      <tr>
+        <th class="text-center">日付</th>
+        <th class="text-center">曜日</th>
+        <th class="text-center">開始時刻</th>
+        <th class="text-center">終了時刻</th>
+        <th class="text-center">時間数</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @overtimes.each do |overtime| %>
+        <tr>
+          <td class="text-center"><%= extract_date(overtime.date) %></td>
+          <td class="text-center day"><%= extract_day(overtime.date) %></td>
+          <td class="text-center"><%= extract_time(overtime.work_start_time) %></td>
+          <td class="text-center"><%= extract_time(overtime.work_end_time) %></td>
+          <td class="text-center"><%= convert_to_hour_and_minute(overtime.work_time_minute) %></td>
+        </tr>
+      <% end %>
+      <tr>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-right">合計</td>
+        <td class="text-center"><%= convert_to_hour_and_minute(@overtimes.sum(:work_time_minute)) %></td>
+      </tr>
+    </tbody>
+  </table>
 
 </div>
