@@ -7,11 +7,11 @@
     <%= render "requests/new_form" %>
   <% end %>
 
-  <div class="mt-3 mb-5", id="request-list">
+  <div class="mt-3 mb-5 ml-4", id="request-list">
     <% if @user.request? %>
       <% @user.requests.each do |request| %>
         <div class="row mt-2 mb-3 pl-2">
-          <div class="col-9 mr-2 border rounded">
+          <div class="col-8 mr-2 border rounded p-2">
             <%= request.detail %>
           </div>
           <% if your_page? %>
@@ -25,11 +25,13 @@
         </div>
       <% end %>
     <% else %>
-      <p class="text-center">今はありません。大丈夫です！</p>
+      <% unless your_page? %>
+        <p class="text-center">今はありません。大丈夫です！</p>
+      <% end %>
     <% end %>
   </div>
 
-  <h4 class="text-center mt-5 mb-3">＜残業の記録＞</h4>
+  <h4 class="text-center mt-5 mb-4">＜残業の記録＞</h4>
   <% if your_page? %>
     <div class="row">
       <div class="col-6">
