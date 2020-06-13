@@ -48,7 +48,10 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
   database: manage_overtime_production
-  username: manage_overtime
-  password: <%= ENV['MANAGE_OVERTIME_DATABASE_PASSWORD'] %>
+  username: root
+  password: password
+  socket: /var/lib/mysql/mysql.sock
