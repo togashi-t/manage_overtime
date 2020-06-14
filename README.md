@@ -1,24 +1,29 @@
 # Manage Overtime
-自身及び同僚の
+同僚の
 - 残業時間実績
 - 困っている事、助けて欲しい事 <br>
 
 を可視化、共有できるアプリです。
 
 ## 制作背景
-私の職場では、精神疾患を患う職員が少なくなく、長時間労働等の仕事のストレスがその要因と考えられるケースが多いです。 <br>
+私の職場では、精神疾患を患う職員が少なくなく、長時間労働等の仕事のストレスがその要因と考えられるケースがあります。 <br>
 私はこうした不幸を減らしたいと思っています。 <br>
 同僚の残業実態（周期性等）や必要としている手助けを、アプリによって容易に正しく認識できれば、繁忙期の仲間の仕事を早期から手助けする等、様々な改善策実施に繋がると考えています。
 
+## DEMO
+![demo](https://user-images.githubusercontent.com/50689005/84583098-ae593800-ae2f-11ea-99cb-c208de662b07.gif)
+
 ## URL
-https://intense-atoll-05047.herokuapp.com/ <br>
+https://www.manage-overtime.work/ <br>
 非ログイン状態の場合は閲覧のみ可能です。ログインすると投稿が可能になります。
 
 ## 使用技術
 - Ruby 2.6.2
 - Rails 5.2.4.2
 - MySQL 5.7.28
-- Heroku
+- AWS(VPC, EC2, RDS, ALB, Route 53, ACM)
+- Nginx
+- Capistrano
 - RSpec
 - Rubocop
 - ajax
@@ -39,5 +44,3 @@ https://intense-atoll-05047.herokuapp.com/ <br>
 
 ## 今後の実装予定
 - 統合テスト
-- AWSへのデプロイ
-  - 独自ドメイン

@@ -1,8 +1,5 @@
 # user
-GROUPS = ["A", "B", "C"].freeze
-# 7グループとしたいが、herokuのdbのクエリ数の制約があることから、
-# データ数を減らすため、一旦3グループとする。
-# GROUPS = ["A", "B", "C", "D", "E", "F", "G"].freeze
+GROUPS = ["A", "B", "C", "D", "E"].freeze
 PASSWORD = "password".freeze
 NUMBER_OF_USERS_PER_GROUP = 3
 
@@ -10,6 +7,15 @@ number_of_groups = GROUPS.length
 number_of_users = NUMBER_OF_USERS_PER_GROUP * number_of_groups
 
 users = []
+# ゲスト
+users << {
+  name: "ゲスト",
+  group: "G",
+  email: "guest@email.com",
+  password: PASSWORD,
+}
+
+# ゲスト以外
 (1..number_of_users).each do |i|
   group_index = i % number_of_groups - 1
   users << {
@@ -80,8 +86,10 @@ Overtime.create!(overtimes)
 puts "残業日時の初期データを投入しました。"
 
 # request
-DETAIL_1 = "園芸産地づくり事業のポンチ絵作成を手伝ってほしいです。".freeze
-DETAIL_2 = "機械導入補助事業の完成確認検査に、私の代役で行ってもらいたいです。".freeze
-User.first.requests.create!(detail: DETAIL_1)
+DETAIL_1 = "水田作付作物の現地確認に、私の代役で行ってもらいたいです。".freeze
+DETAIL_2 = "園芸産地づくり事業のポンチ絵作成を手伝ってほしいです。".freeze
+DETAIL_3 = "機械導入補助事業の完成確認検査に、私の代役で行ってもらいたいです。".freeze
+User.find_by(name: "ゲスト").requests.create!(detail: DETAIL_1)
 User.second.requests.create!(detail: DETAIL_2)
+User.third.requests.create!(detail: DETAIL_3)
 puts "頼みたい事の初期データを投入しました。"
