@@ -36,6 +36,12 @@ group :development, :test do
   gem "rspec-rails"
   gem "rubocop-rails"
   gem "rubocop-rspec"
+  gem 'capistrano'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
+  gem 'capistrano-rbenv'
+  gem 'ed25519'
+  gem 'bcrypt_pbkdf'
 end
 
 group :development do
@@ -48,6 +54,10 @@ group :development do
 end
 
 group :production do
+end
+
+group :production, :staging do
+  gem 'unicorn'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
